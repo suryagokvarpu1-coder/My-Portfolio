@@ -1,0 +1,380 @@
+/* ==========================================================================
+   BASE.CSS — Foundation & Design Tokens
+   Portfolio Design System · Dark Mode
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Google Fonts Import
+   -------------------------------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;600;700;800&display=swap');
+
+/* --------------------------------------------------------------------------
+   CSS Custom Properties (Design Tokens)
+   -------------------------------------------------------------------------- */
+:root {
+  /* ── Colors ─────────────────────────────────────────────────────────── */
+  --color-bg:            #0a0a0f;
+  --color-surface:       #12121a;
+  --color-surface-hover: #1a1a2e;
+  --color-surface-alt:   #16162a;
+
+  --color-primary:       #6c63ff;
+  --color-primary-light: #a78bfa;
+  --color-secondary:     #14f195;
+
+  --color-text-primary:  #f0f0f5;
+  --color-text-muted:    #8888a0;
+  --color-text-heading:  #ffffff;
+
+  --color-error:         #ff4757;
+  --color-success:       #14f195;
+  --color-warning:       #ffc048;
+
+  /* Opacity variants */
+  --color-primary-10:    rgba(108, 99, 255, 0.10);
+  --color-primary-15:    rgba(108, 99, 255, 0.15);
+  --color-primary-30:    rgba(108, 99, 255, 0.30);
+  --color-primary-50:    rgba(108, 99, 255, 0.50);
+  --color-white-03:      rgba(255, 255, 255, 0.03);
+  --color-white-05:      rgba(255, 255, 255, 0.05);
+  --color-white-10:      rgba(255, 255, 255, 0.10);
+  --color-white-15:      rgba(255, 255, 255, 0.15);
+
+  /* Gradients */
+  --gradient-primary:    linear-gradient(135deg, #6c63ff, #a78bfa);
+  --gradient-accent:     linear-gradient(135deg, #6c63ff, #14f195);
+  --gradient-surface:    linear-gradient(180deg, var(--color-surface), var(--color-bg));
+  --gradient-glow:       linear-gradient(135deg, rgba(108, 99, 255, 0.2), rgba(20, 241, 149, 0.1));
+
+  /* ── Typography ─────────────────────────────────────────────────────── */
+  --font-display:  'Outfit', sans-serif;
+  --font-body:     'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono:     'JetBrains Mono', 'Fira Code', monospace;
+
+  --fw-light:      300;
+  --fw-regular:    400;
+  --fw-medium:     500;
+  --fw-semibold:   600;
+  --fw-bold:       700;
+  --fw-extrabold:  800;
+
+  --lh-tight:      1.1;
+  --lh-snug:       1.3;
+  --lh-normal:     1.6;
+  --lh-relaxed:    1.8;
+
+  --ls-tight:      -0.02em;
+  --ls-normal:     0;
+  --ls-wide:       0.05em;
+  --ls-wider:      0.1em;
+  --ls-widest:     0.2em;
+
+  /* ── Spacing (8pt grid) ──────────────────────────────────────────── */
+  --space-1:       0.25rem;  /*  4px */
+  --space-2:       0.5rem;   /*  8px */
+  --space-3:       0.75rem;  /* 12px */
+  --space-4:       1rem;     /* 16px */
+  --space-5:       1.25rem;  /* 20px */
+  --space-6:       1.5rem;   /* 24px */
+  --space-8:       2rem;     /* 32px */
+  --space-10:      2.5rem;   /* 40px */
+  --space-12:      3rem;     /* 48px */
+  --space-16:      4rem;     /* 64px */
+  --space-20:      5rem;     /* 80px */
+  --space-24:      6rem;     /* 96px */
+  --space-32:      8rem;     /* 128px */
+
+  /* ── Border Radius ───────────────────────────────────────────────── */
+  --radius-sm:     8px;
+  --radius-md:     16px;
+  --radius-lg:     24px;
+  --radius-xl:     32px;
+  --radius-full:   9999px;
+
+  /* ── Shadows ─────────────────────────────────────────────────────── */
+  --shadow-sm:     0 2px 8px rgba(0, 0, 0, 0.2);
+  --shadow-md:     0 8px 24px rgba(0, 0, 0, 0.3);
+  --shadow-lg:     0 16px 48px rgba(0, 0, 0, 0.4);
+  --shadow-xl:     0 24px 64px rgba(0, 0, 0, 0.5);
+  --shadow-glow:   0 0 40px rgba(108, 99, 255, 0.2);
+  --shadow-glow-lg:0 0 80px rgba(108, 99, 255, 0.15);
+  --shadow-card:   0 4px 16px rgba(0, 0, 0, 0.25);
+  --shadow-card-hover: 0 20px 60px rgba(108, 99, 255, 0.15);
+
+  /* ── Transitions ─────────────────────────────────────────────────── */
+  --ease-out:      cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out:   cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --duration-fast:   150ms;
+  --duration-normal: 300ms;
+  --duration-slow:   500ms;
+  --duration-slower: 800ms;
+
+  --transition-base:   all var(--duration-normal) var(--ease-out);
+  --transition-fast:   all var(--duration-fast) var(--ease-out);
+  --transition-slow:   all var(--duration-slow) var(--ease-out);
+  --transition-color:  color var(--duration-normal) var(--ease-out);
+  --transition-transform: transform var(--duration-normal) var(--ease-out);
+  --transition-shadow: box-shadow var(--duration-normal) var(--ease-out);
+
+  /* ── Z-Index Scale ───────────────────────────────────────────────── */
+  --z-base:        1;
+  --z-dropdown:    100;
+  --z-sticky:      500;
+  --z-nav:         1000;
+  --z-modal:       5000;
+  --z-preloader:   9999;
+}
+
+/* --------------------------------------------------------------------------
+   CSS Reset
+   -------------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Remove list styles */
+ul,
+ol {
+  list-style: none;
+}
+
+/* Prevent font size inflation */
+html {
+  -moz-text-size-adjust: none;
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
+}
+
+/* Reset links */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Make images easier to work with */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* Remove built-in form typography styles */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+/* Remove textarea default resize behavior */
+textarea {
+  white-space: revert;
+}
+
+/* Avoid text overflows */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+/* Remove button default styles */
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Table reset */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Smooth Scrolling
+   -------------------------------------------------------------------------- */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem; /* Account for fixed navbar */
+}
+
+/* --------------------------------------------------------------------------
+   Selection Colors
+   -------------------------------------------------------------------------- */
+::selection {
+  background-color: var(--color-primary-30);
+  color: var(--color-text-primary);
+}
+
+::-moz-selection {
+  background-color: var(--color-primary-30);
+  color: var(--color-text-primary);
+}
+
+/* --------------------------------------------------------------------------
+   Scrollbar Styling (Thin, Dark)
+   -------------------------------------------------------------------------- */
+/* Webkit-based browsers (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-surface-hover);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-50);
+}
+
+/* Firefox */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-surface-hover) var(--color-bg);
+}
+
+/* --------------------------------------------------------------------------
+   Body Defaults
+   -------------------------------------------------------------------------- */
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  font-weight: var(--fw-regular);
+  font-size: 1rem;
+  line-height: var(--lh-normal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* --------------------------------------------------------------------------
+   Heading Defaults
+   -------------------------------------------------------------------------- */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-tight);
+  color: var(--color-text-heading);
+  letter-spacing: var(--ls-tight);
+}
+
+h1 {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: var(--fw-extrabold);
+}
+
+h2 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: var(--fw-extrabold);
+}
+
+h3 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: var(--fw-bold);
+}
+
+h4 {
+  font-size: 1.25rem;
+  font-weight: var(--fw-semibold);
+}
+
+h5 {
+  font-size: 1.1rem;
+  font-weight: var(--fw-semibold);
+}
+
+h6 {
+  font-size: 1rem;
+  font-weight: var(--fw-semibold);
+}
+
+/* --------------------------------------------------------------------------
+   Paragraph & Inline Defaults
+   -------------------------------------------------------------------------- */
+p {
+  line-height: var(--lh-normal);
+  color: var(--color-text-muted);
+}
+
+strong, b {
+  font-weight: var(--fw-semibold);
+  color: var(--color-text-primary);
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  padding: 0.15em 0.4em;
+  background: var(--color-white-05);
+  border-radius: var(--radius-sm);
+  color: var(--color-primary-light);
+}
+
+/* --------------------------------------------------------------------------
+   Focus Visible (Accessibility)
+   -------------------------------------------------------------------------- */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+/* Remove outline for mouse users */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* --------------------------------------------------------------------------
+   Utility: Gradient Text
+   -------------------------------------------------------------------------- */
+.gradient-text {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-accent {
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* --------------------------------------------------------------------------
+   Utility: Screen Reader Only
+   -------------------------------------------------------------------------- */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

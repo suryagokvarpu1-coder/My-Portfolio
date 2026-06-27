@@ -1,0 +1,265 @@
+/* ==========================================================================
+   ANIMATIONS.CSS — Keyframes & Scroll Triggered Utility Classes
+   ========================================================================== */
+
+/* ── Keyframes ─────────────────────────────────────────────────────────── */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    left: -150%;
+  }
+  50% {
+    left: 150%;
+  }
+  100% {
+    left: 150%;
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0) translateX(-50%);
+  }
+  50% {
+    transform: translateY(8px) translateX(-50%);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  20%, 60% {
+    transform: translateX(-6px);
+  }
+  40%, 80% {
+    transform: translateX(6px);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes drawLine {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+/* ── Scroll Trigger Classes ────────────────────────────────────────────── */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(0.215, 0.61, 0.355, 1), transform 0.8s cubic-bezier(0.215, 0.61, 0.355, 1);
+  will-change: transform, opacity;
+}
+
+.animate-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger Children Support (for bento cards, grid list, list items) */
+.stagger-children > .animate-on-scroll:nth-child(1) { transition-delay: 0ms; }
+.stagger-children > .animate-on-scroll:nth-child(2) { transition-delay: 100ms; }
+.stagger-children > .animate-on-scroll:nth-child(3) { transition-delay: 200ms; }
+.stagger-children > .animate-on-scroll:nth-child(4) { transition-delay: 300ms; }
+.stagger-children > .animate-on-scroll:nth-child(5) { transition-delay: 400ms; }
+.stagger-children > .animate-on-scroll:nth-child(6) { transition-delay: 500ms; }
+.stagger-children > .animate-on-scroll:nth-child(7) { transition-delay: 600ms; }
+.stagger-children > .animate-on-scroll:nth-child(8) { transition-delay: 700ms; }
+
+/* Staggered transition delay utilities */
+.delay-100 { transition-delay: 100ms !important; }
+.delay-200 { transition-delay: 200ms !important; }
+.delay-300 { transition-delay: 300ms !important; }
+.delay-400 { transition-delay: 400ms !important; }
+.delay-500 { transition-delay: 500ms !important; }
+
+/* Left slide */
+.animate-slide-left {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: opacity 0.8s cubic-bezier(0.215, 0.61, 0.355, 1), transform 0.8s cubic-bezier(0.215, 0.61, 0.355, 1);
+  will-change: transform, opacity;
+}
+
+.animate-slide-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Right slide */
+.animate-slide-right {
+  opacity: 0;
+  transform: translateX(40px);
+  transition: opacity 0.8s cubic-bezier(0.215, 0.61, 0.355, 1), transform 0.8s cubic-bezier(0.215, 0.61, 0.355, 1);
+  will-change: transform, opacity;
+}
+
+.animate-slide-right.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Scale-in */
+.animate-scale {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.8s cubic-bezier(0.215, 0.61, 0.355, 1), transform 0.8s cubic-bezier(0.215, 0.61, 0.355, 1);
+  will-change: transform, opacity;
+}
+
+.animate-scale.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ── Character Text Reveal (Three.js Style) ────────────────────────────── */
+.text-reveal {
+  overflow: hidden;
+}
+
+.text-reveal .char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(1.2em);
+  transition: opacity 0.6s cubic-bezier(0.165, 0.84, 0.44, 1), transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+  will-change: transform, opacity;
+}
+
+.text-reveal.revealed .char {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Interactive & Hover animations ─────────────────────────────────────── */
+.gradient-text-animated {
+  background-size: 200% auto;
+  animation: gradientShift 4s ease infinite;
+}
+
+.float-animation {
+  animation: float 5s ease-in-out infinite;
+}
+
+.shake-animation {
+  animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+/* ── Accessibility ─────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .animate-on-scroll,
+  .animate-slide-left,
+  .animate-slide-right,
+  .animate-scale,
+  .text-reveal .char,
+  .skill-bar-fill {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  
+  .float-animation,
+  .scroll-indicator-wheel,
+  .btn-primary:hover::before,
+  .preloader-spinner {
+    animation: none !important;
+  }
+
+  .timeline::before {
+    animation: none !important;
+    transform: scaleY(1) !important;
+  }
+}
