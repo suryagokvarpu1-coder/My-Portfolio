@@ -1,13 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Mail, MapPin, Send, AlertTriangle, CheckCircle2 } from 'lucide-react';
+import { Mail, MapPin, Send, AlertTriangle, CheckCircle2, Github, Linkedin, Instagram } from 'lucide-react';
 import { SectionHeader } from '../components/SectionHeader';
 import { portfolioData } from '../data/portfolioData';
-import { MagneticButton } from '../components/MagneticButton';
 
 export const Contact = () => {
-  const { email, location } = portfolioData.personalInfo;
-  const formCardRef = useRef(null);
+  const { email, location, githubUrl, linkedinUrl, instagramUrl } = portfolioData.personalInfo;
 
   // Form states
   const [formData, setFormData] = useState({
@@ -20,7 +18,6 @@ export const Contact = () => {
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState('idle'); // idle, sending, success, error
 
-  // Input change handler
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -29,7 +26,6 @@ export const Contact = () => {
     }
   };
 
-  // Validation
   const validateForm = () => {
     const tempErrors = {};
     if (!formData.name.trim()) tempErrors.name = "Name / Company is required.";
@@ -45,7 +41,6 @@ export const Contact = () => {
     return Object.keys(tempErrors).length === 0;
   };
 
-  // Submit Handler
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
@@ -82,189 +77,174 @@ export const Contact = () => {
     }
   };
 
-  // Spotlight mouse track
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      const card = formCardRef.current;
-      if (!card) return;
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      card.style.setProperty('--x', `${x}px`);
-      card.style.setProperty('--y', `${y}px`);
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
   return (
-    <section id="contact" className="section" style={{ position: 'relative' }}>
+    <section id="contact" className="section">
       <div className="container">
+        <SectionHeader
+          index="07"
+          title="Get In Touch"
+          subtitle="Feel free to reach out to discuss internship opportunities, project collaborations, or tech inquiries."
+        />
+
         <div className="contact-layout">
-          
-          {/* Left Column: Context Info */}
+          {/* Info Side */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-10%" }}
-            transition={{ duration: 0.8 }}
-            className="contact-info-col"
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="contact-info"
           >
-            <h2 className="contact-title-glow">Let's craft digital solutions</h2>
-            <p className="contact-subtitle-para">
-              Discussing WebGL interaction mechanics, serverless pipelines, cloud infrastructure design, or portfolio opportunities.
+            <h3
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: '1.5rem',
+                fontWeight: 600,
+                color: 'var(--text-primary)',
+                marginBottom: '1rem',
+              }}
+            >
+              Contact Details
+            </h3>
+            <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem', fontSize: '0.95rem' }}>
+              I am always open to discussing new ideas, AI workflow designs, full-stack applications, or internship positions.
             </p>
 
-            <div className="contact-channels-group">
-              {/* Email channel */}
-              <div className="contact-channel-block">
-                <div className="contact-icon-wrapper">
-                  <Mail size={18} color="#e8ff6b" />
-                </div>
-                <div className="contact-channel-details">
-                  <span className="contact-details-label">Direct Inbox</span>
-                  <a href={`mailto:${email}`} className="contact-details-value link-highlight">
-                    {email}
-                  </a>
+            <div className="contact-details-list">
+              <div className="contact-item">
+                <Mail size={18} color="var(--accent-lime)" />
+                <div>
+                  <span className="contact-lbl">Email</span>
+                  <a href={`mailto:${email}`} className="contact-val">{email}</a>
                 </div>
               </div>
 
-              {/* Location channel */}
-              <div className="contact-channel-block">
-                <div className="contact-icon-wrapper">
-                  <MapPin size={18} color="#7c6af7" />
-                </div>
-                <div className="contact-channel-details">
-                  <span className="contact-details-label">Operational Hub</span>
-                  <span className="contact-details-value">{location}</span>
+              <div className="contact-item">
+                <MapPin size={18} color="var(--accent-lime)" />
+                <div>
+                  <span className="contact-lbl">Location</span>
+                  <span className="contact-val">{location}</span>
                 </div>
               </div>
             </div>
+
+            {/* Social Connect Icons */}
+            <div className="contact-social-row" style={{ display: 'flex', gap: '1rem', marginTop: '2.5rem' }}>
+              <a href={githubUrl} target="_blank" rel="noopener noreferrer" className="contact-social-link" aria-label="GitHub">
+                <Github size={20} />
+              </a>
+              <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" className="contact-social-link" aria-label="LinkedIn">
+                <Linkedin size={20} />
+              </a>
+              <a href={instagramUrl} target="_blank" rel="noopener noreferrer" className="contact-social-link" aria-label="Instagram">
+                <Instagram size={20} />
+              </a>
+            </div>
           </motion.div>
 
-          {/* Right Column: Spotlight Glass Form Card */}
+          {/* Form Side */}
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-10%" }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            className="contact-form-col"
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="contact-form-wrap"
           >
-            <div ref={formCardRef} className="contact-form-card surface-spotlight">
-              <div
-                aria-hidden="true"
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  background: 'radial-gradient(500px circle at var(--x, -999px) var(--y, -999px), rgba(232, 255, 107, 0.04), transparent 50%)',
-                  pointerEvents: 'none',
-                }}
-              />
-              <form onSubmit={handleSubmit} noValidate style={{ position: 'relative', zIndex: 1 }}>
-                {/* Name */}
-                <div className={`form-field ${formData.name ? 'filled' : ''} ${errors.name ? 'has-error' : ''}`}>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    className="form-input-base"
-                    required
-                  />
-                  <label htmlFor="name" className="form-label-float">Name / Company</label>
-                  {errors.name && <span className="form-error-text">{errors.name}</span>}
-                </div>
+            <form onSubmit={handleSubmit} noValidate>
+              <div className={`form-field ${errors.name ? 'has-error' : ''}`}>
+                <label htmlFor="name" className="form-label-float">Your Name</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="form-input-base"
+                  placeholder="Enter your name"
+                  required
+                />
+                {errors.name && <span className="form-error-text">{errors.name}</span>}
+              </div>
 
-                {/* Email */}
-                <div className={`form-field ${formData.email ? 'filled' : ''} ${errors.email ? 'has-error' : ''}`}>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="form-input-base"
-                    required
-                  />
-                  <label htmlFor="email" className="form-label-float">Email Address</label>
-                  {errors.email && <span className="form-error-text">{errors.email}</span>}
-                </div>
+              <div className={`form-field ${errors.email ? 'has-error' : ''}`}>
+                <label htmlFor="email" className="form-label-float">Email Address</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="form-input-base"
+                  placeholder="Enter your email"
+                  required
+                />
+                {errors.email && <span className="form-error-text">{errors.email}</span>}
+              </div>
 
-                {/* Subject */}
-                <div className={`form-field ${formData.subject_meta ? 'filled' : ''} ${errors.subject_meta ? 'has-error' : ''}`}>
-                  <input
-                    type="text"
-                    id="subject_meta"
-                    name="subject_meta"
-                    value={formData.subject_meta}
-                    onChange={handleChange}
-                    className="form-input-base"
-                    required
-                  />
-                  <label htmlFor="subject_meta" className="form-label-float">Subject / Topic</label>
-                  {errors.subject_meta && <span className="form-error-text">{errors.subject_meta}</span>}
-                </div>
+              <div className={`form-field ${errors.subject_meta ? 'has-error' : ''}`}>
+                <label htmlFor="subject_meta" className="form-label-float">Subject</label>
+                <input
+                  type="text"
+                  id="subject_meta"
+                  name="subject_meta"
+                  value={formData.subject_meta}
+                  onChange={handleChange}
+                  className="form-input-base"
+                  placeholder="Topic of discussion"
+                  required
+                />
+                {errors.subject_meta && <span className="form-error-text">{errors.subject_meta}</span>}
+              </div>
 
-                {/* Message */}
-                <div className={`form-field ${formData.message ? 'filled' : ''} ${errors.message ? 'has-error' : ''}`}>
-                  <textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    className="form-textarea-base"
-                    required
-                  />
-                  <label htmlFor="message" className="form-label-float">Your Message...</label>
-                  {errors.message && <span className="form-error-text">{errors.message}</span>}
-                </div>
+              <div className={`form-field ${errors.message ? 'has-error' : ''}`}>
+                <label htmlFor="message" className="form-label-float">Message</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  className="form-textarea-base"
+                  placeholder="Write your message details..."
+                  required
+                />
+                {errors.message && <span className="form-error-text">{errors.message}</span>}
+              </div>
 
-                {/* Action button */}
-                <div style={{ marginTop: '2.5rem' }}>
-                  <MagneticButton range={20}>
-                    <button
-                      type="submit"
-                      disabled={status === 'sending'}
-                      className="btn btn-lime"
-                      style={{ width: '100%' }}
-                    >
-                      <Send size={16} style={{ marginRight: '0.6rem' }} />
-                      {status === 'sending' ? 'Transmitting...' : 'Transmit Message'}
-                    </button>
-                  </MagneticButton>
-                </div>
+              <button
+                type="submit"
+                disabled={status === 'sending'}
+                className="btn btn-lime"
+                style={{ width: '100%', padding: '0.85rem' }}
+              >
+                <Send size={15} /> {status === 'sending' ? 'Sending...' : 'Send Message'}
+              </button>
 
-                {/* Alerts */}
-                <AnimatePresence>
-                  {status === 'success' && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 15 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0 }}
-                      className="alert alert-success"
-                    >
-                      <CheckCircle2 size={16} />
-                      <span>Message successfully delivered to Yaswanth's inbox!</span>
-                    </motion.div>
-                  )}
-                  {status === 'error' && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 15 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0 }}
-                      className="alert alert-error"
-                    >
-                      <AlertTriangle size={16} />
-                      <span>Failed to submit. Please verify details and try again.</span>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </form>
-            </div>
+              <AnimatePresence>
+                {status === 'success' && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    className="alert alert-success"
+                  >
+                    <CheckCircle2 size={16} />
+                    <span>Your message has been sent successfully!</span>
+                  </motion.div>
+                )}
+                {status === 'error' && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    className="alert alert-error"
+                  >
+                    <AlertTriangle size={16} />
+                    <span>Failed to send. Please check your network and try again.</span>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </form>
           </motion.div>
-
         </div>
       </div>
 
@@ -272,95 +252,54 @@ export const Contact = () => {
         .contact-layout {
           display: grid;
           grid-template-columns: 1fr;
-          gap: 4rem;
-          align-items: center;
+          gap: 3.5rem;
         }
 
-        .contact-title-glow {
-          font-family: var(--font-display);
-          font-size: clamp(2.2rem, 5vw, 3.5rem);
-          font-weight: 700;
-          line-height: 1.15;
-          letter-spacing: -0.03em;
-          background: var(--gradient-text);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          margin-bottom: 1.5rem;
-        }
-
-        .contact-subtitle-para {
-          font-family: var(--font-body);
-          font-size: 1.05rem;
-          color: var(--text-secondary);
-          line-height: 1.65;
-          margin-bottom: 3.5rem;
-          font-weight: 400;
-          max-width: 540px;
-        }
-
-        .contact-channels-group {
+        .contact-details-list {
           display: flex;
           flex-direction: column;
-          gap: 2rem;
+          gap: 1.5rem;
         }
 
-        .contact-channel-block {
+        .contact-item {
           display: flex;
           align-items: center;
-          gap: 1.25rem;
+          gap: 1rem;
         }
 
-        .contact-icon-wrapper {
-          width: 44px;
-          height: 44px;
-          border-radius: var(--radius-sm);
-          background: rgba(255, 255, 255, 0.02);
-          border: 1px solid rgba(255, 255, 255, 0.05);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .contact-channel-details {
-          display: flex;
-          flex-direction: column;
-        }
-
-        .contact-details-label {
+        .contact-lbl {
+          display: block;
           font-family: var(--font-mono);
           font-size: 0.68rem;
           text-transform: uppercase;
           letter-spacing: 0.1em;
-          color: var(--text-secondary);
-          margin-bottom: 0.25rem;
-          font-weight: 500;
+          color: var(--text-muted);
+          margin-bottom: 0.2rem;
         }
 
-        .contact-details-value {
+        .contact-val {
           font-family: var(--font-display);
-          font-size: 1.05rem;
-          font-weight: 600;
+          font-size: 1rem;
+          font-weight: 500;
           color: var(--text-primary);
-          transition: color 0.3s ease;
         }
 
-        .link-highlight:hover {
-          color: var(--lime);
+        .contact-val:hover {
+          color: var(--accent-lime);
         }
 
-        .contact-form-card {
-          padding: 3rem 2.5rem;
-          border-radius: var(--radius-lg);
-          background: rgba(11, 12, 18, 0.4);
-          border: 1px solid rgba(255, 255, 255, 0.05);
-          backdrop-filter: var(--glass-blur);
-          position: relative;
-          overflow: hidden;
+        .contact-social-link {
+          color: var(--text-secondary);
+          transition: color 0.2s ease;
         }
 
-        @media (min-width: 992px) {
+        .contact-social-link:hover {
+          color: var(--accent-lime);
+        }
+
+        @media (min-width: 860px) {
           .contact-layout {
-            grid-template-columns: 5fr 5fr;
+            grid-template-columns: 4.5fr 5.5fr;
             gap: 5rem;
           }
         }

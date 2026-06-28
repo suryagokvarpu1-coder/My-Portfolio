@@ -1,191 +1,126 @@
 export const portfolioData = {
   personalInfo: {
-    name: "Yaswanth Gokavarapu",
-    title: "Creative Technologist",
-    subtitle: "Designing immersive digital narratives by blending futuristic WebGL interfaces with robust, full-stack software architecture.",
+    name: "Gokavarapu Yaswanth",
+    title: "CSE Student | Full Stack Developer | AI Enthusiast",
+    tagline: "Building Intelligent Solutions Through Code, AI, and Innovation.",
+    motto: "Transforming Ideas into Real-World Digital Experiences with AI, Full Stack Development, and Modern Web Technologies.",
     email: "yaswanthgokavarapu97@gmail.com",
     location: "Hyderabad, India",
-    githubUrl: "https://github.com",
-    linkedinUrl: "https://linkedin.com",
-    experienceYears: "4+",
-    projectsCompleted: "25+",
-    clientSatisfaction: "99%"
+    githubUrl: "https://github.com/suryagokvarpu1-coder",
+    linkedinUrl: "https://www.linkedin.com/in/gokavarapu-yaswanth-128758383/",
+    instagramUrl: "https://instagram.com",
+    experienceYears: "Student & Developer",
+    projectsCompleted: "5+",
   },
   
   aboutMe: {
     paragraphs: [
-      "I am a software engineer and creative technologist who sits at the intersection of aesthetic design and logical systems development. I design, architect, and deploy highly performant web applications that deliver memorable digital stories.",
-      "With years of experience across multiple design languages and technical frameworks, I bring ideas to life—from real-time WebGL interactive canvas simulations to scalable cloud-based backend infrastructures.",
-      "My work prioritizes clean code structure, seamless animations, user accessibility, and bulletproof reliability. I strive to build interfaces that feel alive, fluid, and responsive to every interaction."
+      "I am a passionate Computer Science Engineering student with hands-on experience in modern web development, AI-powered applications, and full-stack development. I enjoy building innovative solutions that combine technology, artificial intelligence, and user-centered design.",
+      "My expertise spans frontend development, backend development, prompt engineering, research & development, and AI-assisted applications.",
+      "I continuously explore emerging technologies and transform ideas into impactful digital experiences with a strong focus on clean architecture, performance, and responsive interfaces."
     ],
     stats: [
-      { id: "years", value: 4, suffix: "+", label: "Years Experience" },
-      { id: "projects", value: 25, suffix: "+", label: "Projects Built" },
-      { id: "satisfaction", value: 99, suffix: "%", label: "Client Satisfaction" }
+      { id: "projects", value: 5, suffix: "+", label: "AI & Web Projects" },
+      { id: "languages", value: 4, suffix: "+", label: "Languages & Tools" },
+      { id: "academic", value: 9, suffix: "/10", label: "Current GPA equivalent" }
     ]
   },
 
-  skills: [
-    {
-      category: "Frontend Architecture",
-      icon: "layout",
-      desc: "Building lightning-fast, production-ready interfaces using React, Next.js, HTML5, and CSS Grid/Flexbox layouts.",
-      proficiency: 95,
-      gradient: "var(--gradient-purple)",
-      techs: ["React", "Next.js", "JavaScript (ES6+)", "HTML5/CSS3", "Vite", "TailwindCSS"]
-    },
-    {
-      category: "3D Graphics & Shaders",
-      icon: "box",
-      desc: "Crafting real-time WebGL scenes and interactive canvas animations utilizing Three.js and custom GLSL shader configurations.",
-      proficiency: 85,
-      gradient: "var(--gradient-teal)",
-      techs: ["Three.js", "WebGL", "GLSL Shaders", "GSAP Animations", "Blender 3D", "Canvas API"]
-    },
-    {
-      category: "Backend & Cloud Systems",
-      icon: "database",
-      desc: "Structuring RESTful endpoints, API integrations (Web3Forms, SendGrid, Stripe), databases (MongoDB, Firestore), and serverless architectures.",
-      proficiency: 90,
-      gradient: "var(--gradient-purple)",
-      techs: ["Node.js", "Express", "MongoDB", "Firebase/Firestore", "FastAPI", "Stripe API"]
-    },
-    {
-      category: "Cross-Platform & Deployment",
-      icon: "cpu",
-      desc: "Designing responsive application systems that compile natively across mobile devices (iOS/Android) and cloud environments.",
-      proficiency: 80,
-      gradient: "var(--gradient-teal)",
-      techs: ["TypeScript", "Docker", "Git/GitHub", "Vercel / Firebase Hosting", "WebSockets", "iOS/Android WebViews"]
-    }
-  ],
+  skills: {
+    frontend: ["HTML5", "CSS3", "JavaScript", "React.js", "Responsive Design", "UI/UX Design"],
+    backend: ["Node.js", "REST APIs", "Firebase"],
+    programming: ["Python", "JavaScript"],
+    tools: ["Git", "GitHub", "Firebase", "Vercel"],
+    ai: ["Prompt Engineering", "AI Application Development", "Research & Development", "AI Workflow Design"]
+  },
 
   projects: [
     {
-      id: "project-1",
-      title: "Premium Music Platform",
-      desc: "Immersive music streaming portal integrating real-time audio frequencies, synchronized lyric engines, and fluid interactive queue management.",
-      tags: ["Next.js", "Web Audio API", "Vanilla CSS"],
-      image: "assets/images/project-1.png",
-      featured: true,
-      demoUrl: "#",
-      githubUrl: "#"
+      id: "beatflow",
+      title: "BeatFlow – Music Streaming Platform",
+      desc: "A modern music streaming web application inspired by leading music platforms. Features Spotify-inspired premium UI, user authentication, playlist management, and dynamic media playback control engines.",
+      tags: ["React.js", "JavaScript", "Firebase", "CSS3", "HTML5"],
+      demoUrl: "https://beatflow-254ba.web.app/#home",
+      githubUrl: "https://github.com/suryagokvarpu1-coder",
+      featured: true
     },
     {
-      id: "project-2",
-      title: "AI Study Companion",
-      desc: "Adaptive student portal featuring automatic notes generation, context-aware chatbot models, and responsive revision testing trackers.",
-      tags: ["React", "Gemini API", "Node.js"],
-      image: "assets/images/project-2.png",
-      featured: false,
-      demoUrl: "#",
-      githubUrl: "#"
+      id: "agri-ai",
+      title: "Agri AI – Smart Agriculture Platform",
+      desc: "An AI-powered agriculture platform helping farmers improve productivity through intelligent insights, crop recommendations, soil analysis, and crop yield prediction visualizations.",
+      tags: ["React.js", "JavaScript", "AI Integration", "Firebase", "Vercel"],
+      demoUrl: "https://agri-ai-platform-rho.vercel.app/",
+      githubUrl: "https://github.com/suryagokvarpu1-coder",
+      featured: false
     },
     {
-      id: "project-3",
-      title: "Digital Storefront",
-      desc: "High-end apparel shop built with frictionless checkout workflows, fast client-side query indexing, and smooth hover micro-animations.",
-      tags: ["Vite", "Stripe SDK", "CSS Modules"],
-      image: "assets/images/project-3.png",
-      featured: false,
-      demoUrl: "#",
-      githubUrl: "#"
+      id: "ai-career",
+      title: "AI Career Assistant",
+      desc: "An intelligent career guidance platform mapping student skills and generating career roadmaps, skill gap analysis, and tailored learning suggestions via AI APIs.",
+      tags: ["React.js", "JavaScript", "Firebase", "AI APIs"],
+      demoUrl: "https://aicareer-assistant.web.app/user_login_page/code.html",
+      githubUrl: "https://github.com/suryagokvarpu1-coder",
+      featured: false
     },
     {
-      id: "project-4",
-      title: "Smart Agriculture Portal",
-      desc: "Geospatial agricultural tracker analyzing satellite imagery to predict soil moisture, identify crop health, and automate field watering cycles.",
-      tags: ["Python", "FastAPI", "Leaflet.js"],
-      image: "assets/images/project-4.png",
-      featured: false,
-      demoUrl: "#",
-      githubUrl: "#"
+      id: "resuboost-ai",
+      title: "ResuBoost AI",
+      desc: "An AI resume optimizer grading resume drafts, predicting ATS scores, and generating phrasing suggestions to maximize recruitability.",
+      tags: ["React.js", "AI Integration", "Firebase", "Vercel"],
+      demoUrl: "https://resuboost-ai-iota.vercel.app",
+      githubUrl: "https://github.com/suryagokvarpu1-coder",
+      featured: false
     },
     {
-      id: "project-5",
-      title: "Real-Time Team IDE",
-      desc: "Multiplayer developer compiler with instantaneous peer text updates, code compilation containers, and integrated audio streaming.",
-      tags: ["WebSockets", "Monaco Editor", "Docker"],
-      image: "assets/images/project-5.png",
-      featured: false,
-      demoUrl: "#",
-      githubUrl: "#"
-    },
-    {
-      id: "project-6",
-      title: "Smart ResuBoost",
-      desc: "Dynamic resume structuring platform leveraging AI parsing models to optimize descriptions for recruitment tracking algorithms.",
-      tags: ["TypeScript", "PDFKit", "AI Parser"],
-      image: "", // Fallback layout will be styled with custom background
-      featured: false,
-      demoUrl: "#",
-      githubUrl: "#"
+      id: "ai-study",
+      title: "AI Study Assistant",
+      desc: "An educational companion generating study plans, resources, and custom practice tests using intelligent artificial intelligence APIs.",
+      tags: ["React.js", "JavaScript", "Firebase", "AI APIs"],
+      demoUrl: "https://ai-study-assistant-fe074.web.app",
+      githubUrl: "https://github.com/suryagokvarpu1-coder",
+      featured: false
     }
   ],
 
   experience: [
     {
-      title: "Lead Software Engineer",
-      company: "Fictional Tech Labs",
-      duration: "2024 — Present",
-      desc: "Spearheading frontend development of immersive client products using Next.js. Architected Three.js background canvas systems, lowering GPU overhead by 25% while implementing standard WCAG 2.1 accessibility protocols."
+      title: "Full Stack Development",
+      company: "Independent Projects",
+      duration: "Ongoing",
+      desc: "Building responsive and scalable web applications using React.js, JavaScript, Node.js, Firebase, and modern frontend technologies. Focused on building modular, clean, and recruiter-friendly architectures."
     },
     {
-      title: "Full Stack Developer",
-      company: "Global Digital Agency",
-      duration: "2022 — 2024",
-      desc: "Constructed high-speed custom REST APIs handling over 10K daily submissions. Built modular bento systems for multi-platform products, lowering load metrics by implementing serverless integrations and automated data pipelines."
+      title: "Artificial Intelligence Development",
+      company: "AI & Web Apps",
+      duration: "Ongoing",
+      desc: "Developed multiple AI-powered platforms including BeatFlow, Agri AI, AI Career Assistant, ResuBoost AI, and AI Study Assistant. Integrated complex generative AI models and workflow systems."
     },
     {
-      title: "Junior Developer",
-      company: "Startup Incubator",
-      duration: "2020 — 2022",
-      desc: "Collaborated closely with design leads to craft fluid micro-animations and smooth transition structures for client presentation sites. Built validation hooks for input forms and optimized visual media assets."
-    }
-  ],
-
-  certifications: [
-    {
-      name: "AWS Certified Developer – Associate",
-      issuer: "Amazon Web Services",
-      date: "Issued Dec 2025",
-      credentialId: "AWS-DEV-1289A"
-    },
-    {
-      name: "Associate Cloud Engineer",
-      issuer: "Google Cloud",
-      date: "Issued Aug 2025",
-      credentialId: "GCP-ACE-9821B"
-    },
-    {
-      name: "Meta Front-End Developer Professional Certificate",
-      issuer: "Meta (Coursera)",
-      date: "Issued Apr 2024",
-      credentialId: "META-FED-3329D"
-    }
-  ],
-
-  achievements: [
-    {
-      title: "1st Place — AI & Cloud Hackathon",
-      desc: "Developed a serverless computer vision model that analyzes crop health under 500ms, winning first prize out of 120 global participant teams."
-    },
-    {
-      title: "Open Source Contributor",
-      desc: "Merged multiple performance optimization pull requests into core WebGL loading libraries, helping improve file decompression speeds."
-    },
-    {
-      title: "Ranked Top 3% Nationwide",
-      desc: "Exhibited top-tier algorithmic problem-solving and software architecture execution in a competitive programming competition with 25,000+ candidates."
+      title: "Research & Development",
+      company: "Academic Exploration",
+      duration: "Ongoing",
+      desc: "Actively exploring Generative AI, Prompt Engineering, Modern Web Technologies, AI-powered User Experiences, and Full Stack Architecture to build intelligent digital products."
     }
   ],
 
   education: [
     {
-      degree: "Bachelor of Technology in Computer Science",
-      institution: "National Institute of Technology",
-      duration: "2016 — 2020",
-      grade: "GPA: 9.2/10"
+      degree: "Bachelor of Technology (B.Tech) - Computer Science Engineering",
+      institution: "Malla Reddy (MR) Deemed to be University",
+      duration: "Ongoing",
+      grade: "CSE"
+    },
+    {
+      degree: "Intermediate Education",
+      institution: "Shri Shiridi Sai Junior College",
+      duration: "2023 — 2025",
+      grade: "Score: 75.2%"
+    },
+    {
+      degree: "Schooling (E.M)",
+      institution: "Bhashyam E.M School",
+      duration: "Completed",
+      grade: "Score: 86.5%"
     }
   ]
 };

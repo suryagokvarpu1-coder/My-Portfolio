@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
-import { MagneticButton } from './MagneticButton';
 
 const NAV_LINKS = [
   { href: '#hero', label: 'Home' },
@@ -9,6 +8,8 @@ const NAV_LINKS = [
   { href: '#skills', label: 'Skills' },
   { href: '#projects', label: 'Projects' },
   { href: '#experience', label: 'Experience' },
+  { href: '#github', label: 'GitHub' },
+  { href: '#education', label: 'Education' },
   { href: '#contact', label: 'Contact' },
 ];
 
@@ -18,7 +19,7 @@ export const Navbar = () => {
   const [activeSection, setActiveSection] = useState('hero');
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50);
+    const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
@@ -30,7 +31,7 @@ export const Navbar = () => {
       if (!el) return null;
       const obs = new IntersectionObserver(
         ([entry]) => { if (entry.isIntersecting) setActiveSection(id); },
-        { rootMargin: '-35% 0px -45% 0px', threshold: 0 }
+        { rootMargin: '-40% 0px -40% 0px', threshold: 0 }
       );
       obs.observe(el);
       return obs;
@@ -43,247 +44,165 @@ export const Navbar = () => {
     setMobileOpen(false);
     const el = document.querySelector(href);
     if (!el) return;
-    const top = el.getBoundingClientRect().top + window.scrollY - 90;
+    const top = el.getBoundingClientRect().top + window.scrollY - 80;
     window.scrollTo({ top, behavior: 'smooth' });
   };
 
   return (
     <>
-      <motion.header
-        initial={{ y: -80, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+      <header
         style={{
           position: 'fixed',
-          top: scrolled ? '1rem' : '1.75rem',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '92%',
-          maxWidth: scrolled ? '860px' : '1100px',
+          top: 0,
+          left: 0,
+          right: 0,
           zIndex: 1000,
-          transition: 'top 0.4s ease, max-width 0.4s ease',
+          padding: scrolled ? '1rem 0' : '1.5rem 0',
+          background: scrolled ? 'rgba(10, 11, 16, 0.92)' : 'transparent',
+          borderBottom: scrolled ? '1px solid var(--border)' : '1px solid transparent',
+          backdropFilter: scrolled ? 'blur(12px)' : 'none',
+          WebkitBackdropFilter: scrolled ? 'blur(12px)' : 'none',
+          transition: 'all 0.3s ease',
         }}
       >
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            padding: scrolled ? '0.65rem 1.5rem' : '0.9rem 2rem',
-            borderRadius: '100px',
-            background: scrolled
-              ? 'rgba(5, 5, 8, 0.85)'
-              : 'rgba(5, 5, 8, 0.4)',
-            border: `1px solid ${scrolled ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.04)'}`,
-            backdropFilter: 'blur(20px) saturate(160%)',
-            WebkitBackdropFilter: 'blur(20px) saturate(160%)',
-            boxShadow: scrolled ? '0 8px 32px rgba(0,0,0,0.5)' : 'none',
-            transition: 'all 0.4s ease',
-          }}
-        >
+        <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           {/* Logo */}
-          <MagneticButton>
-            <a
-              href="#hero"
-              onClick={(e) => handleClick(e, '#hero')}
-              style={{
-                fontFamily: "'Space Grotesk', sans-serif",
-                fontWeight: 700,
-                fontSize: '1.05rem',
-                letterSpacing: '0.08em',
-                color: '#f0f0f5',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.4rem',
-              }}
-            >
-              <span style={{ color: '#e8ff6b' }}>YG</span>
-              <span style={{ color: 'rgba(240,240,245,0.35)', fontWeight: 300, fontSize: '0.9rem' }}>·</span>
-              <span style={{ fontSize: '0.78rem', fontWeight: 500, color: 'rgba(240,240,245,0.5)', letterSpacing: '0.12em' }}>PORTFOLIO</span>
-            </a>
-          </MagneticButton>
+          <a
+            href="#hero"
+            onClick={(e) => handleClick(e, '#hero')}
+            style={{
+              fontFamily: "var(--font-display)",
+              fontWeight: 700,
+              fontSize: '1.2rem',
+              color: 'var(--text-primary)',
+              letterSpacing: '-0.03em',
+            }}
+          >
+            Yaswanth<span style={{ color: 'var(--accent-lime)' }}>.G</span>
+          </a>
 
-          {/* Desktop Nav */}
-          <nav aria-label="Primary navigation" className="desktop-nav-vm">
-            <ul
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.25rem',
-                listStyle: 'none',
-              }}
-            >
+          {/* Desktop Links */}
+          <nav aria-label="Main Navigation" style={{ display: 'flex', alignItems: 'center', gap: '2rem' }} className="desktop-nav-only">
+            <ul style={{ display: 'flex', gap: '1.75rem', listStyle: 'none', alignItems: 'center' }}>
               {NAV_LINKS.map(link => {
                 const isActive = activeSection === link.href.replace('#', '');
                 return (
                   <li key={link.href}>
-                    <MagneticButton range={30}>
-                      <a
-                        href={link.href}
-                        onClick={(e) => handleClick(e, link.href)}
-                        style={{
-                          fontFamily: "'DM Sans', sans-serif",
-                          fontWeight: 500,
-                          fontSize: '0.875rem',
-                          color: isActive ? '#f0f0f5' : '#7a7a8c',
-                          padding: '0.5rem 0.9rem',
-                          borderRadius: '100px',
-                          display: 'block',
-                          position: 'relative',
-                          transition: 'color 0.25s ease',
-                          background: isActive ? 'rgba(232,255,107,0.06)' : 'transparent',
-                          border: `1px solid ${isActive ? 'rgba(232,255,107,0.15)' : 'transparent'}`,
-                        }}
-                      >
-                        {isActive && (
-                          <motion.span
-                            layoutId="nav-active-pill"
-                            style={{
-                              position: 'absolute',
-                              inset: 0,
-                              borderRadius: '100px',
-                              background: 'rgba(232,255,107,0.06)',
-                              border: '1px solid rgba(232,255,107,0.15)',
-                            }}
-                            transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                          />
-                        )}
-                        <span style={{ position: 'relative', zIndex: 1 }}>{link.label}</span>
-                      </a>
-                    </MagneticButton>
-                  </li>
-                );
-              })}
-            </ul>
-          </nav>
-
-          {/* CTA + Mobile Toggle */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <MagneticButton>
-              <a
-                href="#contact"
-                onClick={(e) => handleClick(e, '#contact')}
-                className="btn btn-lime desktop-cta-vm"
-                style={{ padding: '0.6rem 1.25rem', fontSize: '0.82rem' }}
-              >
-                Hire Me
-              </a>
-            </MagneticButton>
-
-            <button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className="mobile-toggle-vm"
-              aria-label="Toggle menu"
-              style={{
-                background: 'rgba(255,255,255,0.04)',
-                border: '1px solid rgba(255,255,255,0.08)',
-                color: '#f0f0f5',
-                width: '38px',
-                height: '38px',
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'none',
-              }}
-            >
-              {mobileOpen ? <X size={18} /> : <Menu size={18} />}
-            </button>
-          </div>
-        </div>
-      </motion.header>
-
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            style={{
-              position: 'fixed',
-              inset: 0,
-              zIndex: 998,
-              background: 'rgba(5, 5, 8, 0.97)',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              backdropFilter: 'blur(20px)',
-            }}
-          >
-            {/* Decorative element */}
-            <div
-              aria-hidden="true"
-              style={{
-                position: 'absolute',
-                width: '400px',
-                height: '400px',
-                borderRadius: '50%',
-                background: 'radial-gradient(circle, rgba(124,106,247,0.06) 0%, transparent 70%)',
-                pointerEvents: 'none',
-              }}
-            />
-
-            <ul style={{ listStyle: 'none', textAlign: 'center', display: 'flex', flexDirection: 'column', gap: '1.5rem', position: 'relative', zIndex: 1 }}>
-              {NAV_LINKS.map((link, i) => {
-                const isActive = activeSection === link.href.replace('#', '');
-                return (
-                  <motion.li
-                    key={link.href}
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.06 * i, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                  >
                     <a
                       href={link.href}
                       onClick={(e) => handleClick(e, link.href)}
                       style={{
-                        fontFamily: "'Space Grotesk', sans-serif",
-                        fontWeight: 700,
-                        fontSize: 'clamp(2rem, 7vw, 3rem)',
-                        color: isActive ? '#e8ff6b' : 'rgba(240,240,245,0.7)',
-                        letterSpacing: '-0.02em',
-                        transition: 'color 0.2s ease',
+                        fontFamily: 'var(--font-display)',
+                        fontSize: '0.85rem',
+                        fontWeight: 500,
+                        color: isActive ? 'var(--text-primary)' : 'var(--text-secondary)',
+                        position: 'relative',
+                        padding: '0.25rem 0',
                       }}
                     >
                       {link.label}
+                      {isActive && (
+                        <motion.div
+                          layoutId="nav-underline"
+                          style={{
+                            position: 'absolute',
+                            left: 0,
+                            right: 0,
+                            bottom: -4,
+                            height: '2px',
+                            background: 'var(--accent-lime)',
+                          }}
+                        />
+                      )}
                     </a>
-                  </motion.li>
+                  </li>
                 );
               })}
             </ul>
 
-            {/* Bottom info */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
-              style={{
-                position: 'absolute',
-                bottom: '2.5rem',
-                fontFamily: "'DM Mono', monospace",
-                fontSize: '0.65rem',
-                color: '#3a3a4a',
-                letterSpacing: '0.2em',
-                textTransform: 'uppercase',
-              }}
+            <a
+              href="#contact"
+              onClick={(e) => handleClick(e, '#contact')}
+              className="btn btn-lime"
+              style={{ padding: '0.5rem 1rem', fontSize: '0.8rem' }}
             >
-              yaswanthgokavarapu97@gmail.com
-            </motion.div>
+              Contact
+            </a>
+          </nav>
+
+          {/* Mobile Toggle */}
+          <button
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="mobile-nav-toggle"
+            aria-label="Toggle Navigation"
+            style={{
+              display: 'none',
+              background: 'rgba(255, 255, 255, 0.04)',
+              border: '1px solid var(--border)',
+              color: 'var(--text-primary)',
+              width: '36px',
+              height: '36px',
+              borderRadius: '8px',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            {mobileOpen ? <X size={18} /> : <Menu size={18} />}
+          </button>
+        </div>
+      </header>
+
+      {/* Mobile Drawer */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.25 }}
+            style={{
+              position: 'fixed',
+              top: '60px',
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: 'rgba(10, 11, 16, 0.98)',
+              backdropFilter: 'blur(12px)',
+              zIndex: 999,
+              display: 'flex',
+              flexDirection: 'column',
+              padding: '2rem 1.5rem',
+            }}
+          >
+            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+              {NAV_LINKS.map((link) => {
+                const isActive = activeSection === link.href.replace('#', '');
+                return (
+                  <li key={link.href}>
+                    <a
+                      href={link.href}
+                      onClick={(e) => handleClick(e, link.href)}
+                      style={{
+                        fontFamily: 'var(--font-display)',
+                        fontSize: '1.25rem',
+                        fontWeight: 600,
+                        color: isActive ? 'var(--accent-lime)' : 'var(--text-primary)',
+                      }}
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
           </motion.div>
         )}
       </AnimatePresence>
 
       <style>{`
-        .desktop-nav-vm { display: none; }
-        .desktop-cta-vm { display: none; }
-
-        @media (min-width: 860px) {
-          .desktop-nav-vm { display: block; }
-          .desktop-cta-vm { display: inline-flex; }
-          .mobile-toggle-vm { display: none !important; }
+        @media (max-width: 860px) {
+          .desktop-nav-only { display: none !important; }
+          .mobile-nav-toggle { display: flex !important; }
         }
       `}</style>
     </>
