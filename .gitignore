@@ -12,3 +12,10 @@ Desktop.ini
 *.njsproj
 *.sln
 *.sw?
+
+# dependencies
+node_modules/
+dist/
+.firebase/
+.env
+
