@@ -21,8 +21,7 @@ export const portfolioData = {
     ],
     stats: [
       { id: "projects", value: 5, suffix: "+", label: "AI & Web Projects" },
-      { id: "languages", value: 4, suffix: "+", label: "Languages & Tools" },
-      { id: "academic", value: 9, suffix: "/10", label: "Current GPA equivalent" }
+      { id: "languages", value: 4, suffix: "+", label: "Languages & Tools" }
     ]
   },
 
@@ -107,20 +106,17 @@ export const portfolioData = {
     {
       degree: "Bachelor of Technology (B.Tech) - Computer Science Engineering",
       institution: "Malla Reddy (MR) Deemed to be University",
-      duration: "Ongoing",
-      grade: "CSE"
+      duration: "Ongoing"
     },
     {
       degree: "Intermediate Education",
       institution: "Shri Shiridi Sai Junior College",
-      duration: "2023 — 2025",
-      grade: "Score: 75.2%"
+      duration: "2023 — 2025"
     },
     {
       degree: "Schooling (E.M)",
       institution: "Bhashyam E.M School",
-      duration: "Completed",
-      grade: "Score: 86.5%"
+      duration: "Completed"
     }
   ]
 };

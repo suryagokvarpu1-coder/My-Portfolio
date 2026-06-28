@@ -77,12 +77,7 @@ export const Resume = () => {
 
                 <span className="edu-duration">{edu.duration}</span>
                 <h3 className="edu-degree">{edu.degree}</h3>
-                <span className="edu-institution">{edu.institution}</span>
-                
-                <div className="edu-grade-pill">
-                  <span className="edu-grade-lbl">Result</span>
-                  <span className="edu-grade-val">{edu.grade}</span>
-                </div>
+                <span className="edu-institution" style={{ marginBottom: 0 }}>{edu.institution}</span>
               </motion.div>
             );
           })}
@@ -124,31 +119,6 @@ export const Resume = () => {
           font-size: 0.9rem;
           color: var(--text-secondary);
           display: block;
-          margin-bottom: 1.5rem;
-        }
-
-        .edu-grade-pill {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.5rem;
-          padding: 0.35rem 0.75rem;
-          background: var(--accent-light);
-          border: 1px solid rgba(220, 38, 38, 0.15);
-          border-radius: 8px;
-        }
-
-        .edu-grade-lbl {
-          font-family: var(--font-body);
-          font-size: 0.72rem;
-          color: var(--text-muted);
-          font-weight: 500;
-        }
-
-        .edu-grade-val {
-          font-family: var(--font-mono);
-          font-size: 0.78rem;
-          color: var(--text-primary);
-          font-weight: 600;
         }
 
         @media (min-width: 768px) {
