@@ -105,7 +105,7 @@ export const GitHubSection = () => {
                   href={githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn btn-outline"
+                  className="btn btn-secondary"
                 >
                   <ExternalLink size={15} /> Visit GitHub Profile
                 </a>

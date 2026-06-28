@@ -5,11 +5,11 @@ import { SectionHeader } from '../components/SectionHeader';
 import { portfolioData } from '../data/portfolioData';
 
 const CARD_GRADIENTS = [
-  'linear-gradient(135deg, rgba(220, 38, 38, 0.06) 0%, rgba(239, 68, 68, 0.03) 100%)',
-  'linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, rgba(220, 38, 38, 0.08) 100%)',
-  'linear-gradient(135deg, rgba(220, 38, 38, 0.04) 0%, rgba(254, 226, 226, 0.6) 100%)',
-  'linear-gradient(135deg, rgba(254, 226, 226, 0.8) 0%, rgba(220, 38, 38, 0.06) 100%)',
-  'linear-gradient(135deg, rgba(220, 38, 38, 0.08) 0%, rgba(239, 68, 68, 0.04) 100%)',
+  'linear-gradient(135deg, #DC2626 0%, #EF4444 100%)',
+  'linear-gradient(135deg, #B91C1C 0%, #DC2626 100%)',
+  'linear-gradient(135deg, #991B1B 0%, #EF4444 100%)',
+  'linear-gradient(135deg, #B91C1C 0%, #EF4444 100%)',
+  'linear-gradient(135deg, #DC2626 0%, #B91C1C 100%)',
 ];
 
 export const Projects = () => {

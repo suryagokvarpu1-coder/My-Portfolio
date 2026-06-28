@@ -151,7 +151,7 @@ export const Hero = () => {
               <a
                 href="#contact"
                 onClick={(e) => handleCtaClick(e, '#contact')}
-                className="btn btn-lime"
+                className="btn btn-primary"
               >
                 Contact Me
               </a>
@@ -162,7 +162,7 @@ export const Hero = () => {
                   e.preventDefault();
                   alert("CV asset generation complete. Ready to link real PDF document.");
                 }}
-                className="btn btn-outline"
+                className="btn btn-secondary"
               >
                 Download Resume
               </a>

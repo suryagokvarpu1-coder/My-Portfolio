@@ -5,7 +5,7 @@ import { SectionHeader } from '../components/SectionHeader';
 import { portfolioData } from '../data/portfolioData';
 
 const ACCENT_COLORS = ['#DC2626', '#EF4444', '#B91C1C'];
-const ISSUER_COLORS = { 'Amazon Web Services': '#FF9900', 'Google Cloud': '#4285F4', 'Meta (Coursera)': '#0866FF' };
+const ISSUER_COLORS = { 'Amazon Web Services': '#EF4444', 'Google Cloud': '#4285F4', 'Meta (Coursera)': '#0866FF' };
 
 export const Certifications = () => {
   const certifications = portfolioData.certifications;

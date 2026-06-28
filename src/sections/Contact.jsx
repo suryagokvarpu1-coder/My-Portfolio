@@ -213,7 +213,7 @@ export const Contact = () => {
               <button
                 type="submit"
                 disabled={status === 'sending'}
-                className="btn btn-lime"
+                className="btn btn-primary"
                 style={{ width: '100%', padding: '0.85rem' }}
               >
                 <Send size={15} /> {status === 'sending' ? 'Sending...' : 'Send Message'}
