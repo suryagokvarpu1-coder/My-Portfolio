@@ -11,8 +11,7 @@ export const Footer = () => {
     const targetElement = document.querySelector(href);
     if (!targetElement) return;
     
-    const offset = 100;
-    const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - offset;
+    const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - 90;
     
     window.scrollTo({
       top: targetPosition,
@@ -23,49 +22,85 @@ export const Footer = () => {
   return (
     <footer
       style={{
-        borderTop: '1px solid rgba(255, 255, 255, 0.04)',
-        backgroundColor: '#010103',
-        padding: '5rem 0 4rem 0',
+        borderTop: '1px solid rgba(255, 255, 255, 0.05)',
+        backgroundColor: '#050508',
+        padding: '6rem 0 3rem 0',
         position: 'relative',
         zIndex: 2,
+        overflow: 'hidden',
       }}
     >
-      <div className="container footer-grid">
-        {/* Left: Copyright */}
-        <div className="footer-copyright-col">
-          <p style={{ fontSize: '0.88rem', color: '#64748b', fontFamily: "'Inter', sans-serif", fontWeight: 300 }}>
-            &copy; {new Date().getFullYear()} {name}. Built from scratch.
+      {/* Background Ghost Text */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          bottom: '-2rem',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          fontFamily: "'Space Grotesk', sans-serif",
+          fontSize: 'clamp(5rem, 16vw, 15rem)',
+          fontWeight: 700,
+          color: 'rgba(255, 255, 255, 0.015)',
+          lineHeight: 1,
+          whiteSpace: 'nowrap',
+          userSelect: 'none',
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+      >
+        YASWANTH
+      </div>
+
+      <div className="container footer-grid" style={{ position: 'relative', zIndex: 1 }}>
+        {/* Left: Brand / Tagline */}
+        <div className="footer-brand-col">
+          <h3
+            style={{
+              fontFamily: "'Space Grotesk', sans-serif",
+              fontSize: '1.25rem',
+              fontWeight: 700,
+              color: '#f0f0f5',
+              marginBottom: '1rem',
+            }}
+          >
+            Yaswanth Gokavarapu
+          </h3>
+          <p style={{ fontSize: '0.85rem', color: '#7a7a8c', maxWidth: '280px', lineHeight: 1.6 }}>
+            Designing immersive digital narratives by blending futuristic interfaces with robust software architecture.
           </p>
         </div>
 
-        {/* Center: Quick Links Capsule */}
-        <ul className="footer-links-row">
-          <li>
-            <a href="#hero" onClick={(e) => handleFooterLinkClick(e, '#hero')} className="footer-link">
-              Home
-            </a>
-          </li>
-          <li>
-            <a href="#about" onClick={(e) => handleFooterLinkClick(e, '#about')} className="footer-link">
-              About
-            </a>
-          </li>
-          <li>
-            <a href="#skills" onClick={(e) => handleFooterLinkClick(e, '#skills')} className="footer-link">
-              Skills
-            </a>
-          </li>
-          <li>
-            <a href="#projects" onClick={(e) => handleFooterLinkClick(e, '#projects')} className="footer-link">
-              Projects
-            </a>
-          </li>
-          <li>
-            <a href="#experience" onClick={(e) => handleFooterLinkClick(e, '#experience')} className="footer-link">
-              Experience
-            </a>
-          </li>
-        </ul>
+        {/* Center: Navigation Links */}
+        <div className="footer-links-col">
+          <ul className="footer-links-row">
+            <li>
+              <a href="#hero" onClick={(e) => handleFooterLinkClick(e, '#hero')} className="footer-link">
+                Home
+              </a>
+            </li>
+            <li>
+              <a href="#about" onClick={(e) => handleFooterLinkClick(e, '#about')} className="footer-link">
+                About
+              </a>
+            </li>
+            <li>
+              <a href="#skills" onClick={(e) => handleFooterLinkClick(e, '#skills')} className="footer-link">
+                Skills
+              </a>
+            </li>
+            <li>
+              <a href="#projects" onClick={(e) => handleFooterLinkClick(e, '#projects')} className="footer-link">
+                Projects
+              </a>
+            </li>
+            <li>
+              <a href="#experience" onClick={(e) => handleFooterLinkClick(e, '#experience')} className="footer-link">
+                Experience
+              </a>
+            </li>
+          </ul>
+        </div>
 
         {/* Right: Social & Navigation */}
         <div className="footer-actions-col">
@@ -107,6 +142,13 @@ export const Footer = () => {
         </div>
       </div>
 
+      {/* Bottom copyright line */}
+      <div className="container" style={{ position: 'relative', zIndex: 1, marginTop: '4rem', paddingTop: '2rem', borderTop: '1px solid rgba(255, 255, 255, 0.03)' }}>
+        <p style={{ fontSize: '0.78rem', color: '#3a3a4a', fontFamily: "'DM Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.1em', textAlign: 'center' }}>
+          &copy; {new Date().getFullYear()} {name}. All Rights Reserved. Crafted with passion.
+        </p>
+      </div>
+
       <style>{`
         .footer-grid {
           display: grid;
@@ -125,7 +167,7 @@ export const Footer = () => {
         }
 
         .footer-link {
-          font-family: var(--font-title);
+          font-family: var(--font-display);
           font-size: 0.85rem;
           font-weight: 500;
           color: var(--text-secondary);
@@ -135,7 +177,7 @@ export const Footer = () => {
         }
 
         .footer-link:hover {
-          color: var(--accent-purple);
+          color: var(--lime);
         }
 
         .footer-actions-col {
@@ -164,10 +206,10 @@ export const Footer = () => {
         }
 
         .footer-social-link:hover {
-          color: var(--text-primary);
-          border-color: rgba(255, 255, 255, 0.15);
-          background: rgba(255, 255, 255, 0.04);
-          box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
+          color: var(--lime);
+          border-color: rgba(232, 255, 107, 0.2);
+          background: var(--lime-dim);
+          box-shadow: var(--shadow-lime);
         }
 
         .back-to-top-btn {
@@ -180,15 +222,15 @@ export const Footer = () => {
           align-items: center;
           justify-content: center;
           color: var(--text-secondary);
-          cursor: pointer;
+          cursor: none;
           transition: all 0.3s ease;
         }
 
         .back-to-top-btn:hover {
-          background: var(--gradient-purple);
+          background: var(--lime);
           border-color: transparent;
-          color: white;
-          box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+          color: var(--text-inverse);
+          box-shadow: var(--shadow-lime);
         }
 
         @media (min-width: 768px) {

@@ -1,188 +1,210 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Award } from 'lucide-react';
+import { Award, CheckCircle } from 'lucide-react';
 import { SectionHeader } from '../components/SectionHeader';
 import { portfolioData } from '../data/portfolioData';
+
+const ACCENT_COLORS = ['#e8ff6b', '#7c6af7', '#4cc9f0'];
+const ISSUER_COLORS = { 'Amazon Web Services': '#ff9900', 'Google Cloud': '#4285f4', 'Meta (Coursera)': '#0866ff' };
 
 export const Certifications = () => {
   const certifications = portfolioData.certifications;
   const cardsRef = useRef([]);
 
-  // Spotlight mouse track
   useEffect(() => {
-    const handleMouseMove = (e) => {
-      cardsRef.current.forEach((card) => {
+    const move = (e) => {
+      cardsRef.current.forEach(card => {
         if (!card) return;
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        card.style.setProperty('--mouse-x', `${x}px`);
-        card.style.setProperty('--mouse-y', `${y}px`);
+        const r = card.getBoundingClientRect();
+        card.style.setProperty('--x', `${e.clientX - r.left}px`);
+        card.style.setProperty('--y', `${e.clientY - r.top}px`);
       });
     };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', move);
+    return () => window.removeEventListener('mousemove', move);
   }, []);
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.15 }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: 25, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { duration: 0.7, ease: "easeOut" }
-    }
-  };
 
   return (
     <section id="certifications" className="section" style={{ position: 'relative' }}>
-      {/* Dynamic light glows */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '20%',
-          left: '-200px',
-          width: '450px',
-          height: '450px',
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(99,102,241,0.02) 0%, rgba(0,0,0,0) 70%)',
-          pointerEvents: 'none',
-          zIndex: 0,
-        }}
-      />
-
-      <div className="container" style={{ position: 'relative', zIndex: 2 }}>
+      <div className="container">
         <SectionHeader
           index="05"
           title="Certifications"
-          subtitle="Validated credentials and badges certified by top industry cloud provider environments."
+          subtitle="Validated credentials from top cloud and technology platforms."
+          align="center"
         />
 
         <motion.div
-          variants={containerVariants}
+          className="certs-grid"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-10%" }}
-          className="certifications-grid"
+          viewport={{ once: true, margin: '-8%' }}
+          variants={{
+            hidden: { opacity: 0 },
+            visible: { opacity: 1, transition: { staggerChildren: 0.12 } },
+          }}
         >
-          {certifications.map((cert, index) => (
-            <motion.div
-              key={cert.name}
-              ref={(el) => (cardsRef.current[index] = el)}
-              variants={itemVariants}
-              className="glass-card cert-card"
-            >
-              <div className="cert-badge-outer">
-                <Award size={22} color="#10b981" />
-              </div>
-              <div className="cert-content-block">
-                <h3 className="cert-title-text">{cert.name}</h3>
-                <div className="cert-meta-row">
-                  <span className="cert-issuer-label">{cert.issuer}</span>
-                  <span className="cert-split-dot">•</span>
-                  <span className="cert-issue-date">{cert.date}</span>
+          {certifications.map((cert, index) => {
+            const accent = ACCENT_COLORS[index % ACCENT_COLORS.length];
+            const issuerColor = ISSUER_COLORS[cert.issuer] || accent;
+
+            return (
+              <motion.div
+                key={cert.name}
+                ref={el => (cardsRef.current[index] = el)}
+                variants={{
+                  hidden: { opacity: 0, y: 30 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } },
+                }}
+                className="cert-card"
+                style={{
+                  background: 'rgba(11,12,18,0.5)',
+                  border: '1px solid rgba(255,255,255,0.06)',
+                  borderRadius: '20px',
+                  padding: '2rem',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  backdropFilter: 'blur(12px)',
+                  transition: 'border-color 0.3s ease, transform 0.4s ease',
+                }}
+                whileHover={{ y: -5, transition: { duration: 0.3 } }}
+              >
+                {/* Spotlight */}
+                <div
+                  aria-hidden="true"
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    background: `radial-gradient(400px circle at var(--x, -999px) var(--y, -999px), ${accent}05, transparent 50%)`,
+                    pointerEvents: 'none',
+                  }}
+                />
+
+                {/* Top border accent */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    height: '2px',
+                    background: `linear-gradient(90deg, ${accent}60, transparent)`,
+                    borderRadius: '20px 20px 0 0',
+                  }}
+                />
+
+                <div style={{ position: 'relative', zIndex: 1 }}>
+                  {/* Badge */}
+                  <div
+                    style={{
+                      width: '44px',
+                      height: '44px',
+                      borderRadius: '12px',
+                      background: `${accent}10`,
+                      border: `1px solid ${accent}25`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginBottom: '1.25rem',
+                    }}
+                  >
+                    <Award size={20} color={accent} />
+                  </div>
+
+                  <h3
+                    style={{
+                      fontFamily: "'Space Grotesk', sans-serif",
+                      fontSize: '1.1rem',
+                      fontWeight: 600,
+                      color: '#f0f0f5',
+                      letterSpacing: '-0.02em',
+                      lineHeight: 1.3,
+                      marginBottom: '0.75rem',
+                    }}
+                  >
+                    {cert.name}
+                  </h3>
+
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      marginBottom: '0.75rem',
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontFamily: "'DM Sans', sans-serif",
+                        fontSize: '0.82rem',
+                        fontWeight: 600,
+                        color: issuerColor,
+                      }}
+                    >
+                      {cert.issuer}
+                    </span>
+                    <span style={{ color: '#3a3a4a', fontSize: '0.7rem' }}>·</span>
+                    <span
+                      style={{
+                        fontFamily: "'DM Mono', monospace",
+                        fontSize: '0.7rem',
+                        color: '#7a7a8c',
+                      }}
+                    >
+                      {cert.date}
+                    </span>
+                  </div>
+
+                  {cert.credentialId && (
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.4rem',
+                        padding: '0.3rem 0.6rem',
+                        background: 'rgba(255,255,255,0.02)',
+                        border: '1px solid rgba(255,255,255,0.05)',
+                        borderRadius: '8px',
+                        width: 'fit-content',
+                      }}
+                    >
+                      <CheckCircle size={11} color="#22c55e" />
+                      <span
+                        style={{
+                          fontFamily: "'DM Mono', monospace",
+                          fontSize: '0.62rem',
+                          color: '#3a3a4a',
+                          letterSpacing: '0.04em',
+                        }}
+                      >
+                        {cert.credentialId}
+                      </span>
+                    </div>
+                  )}
                 </div>
-                {cert.credentialId && (
-                  <span className="cert-credential-id">CREDENTIAL ID: {cert.credentialId}</span>
-                )}
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            );
+          })}
         </motion.div>
       </div>
 
       <style>{`
-        .certifications-grid {
+        .certs-grid {
           display: grid;
           grid-template-columns: 1fr;
           gap: 1.5rem;
-          max-width: 900px;
+          max-width: 960px;
           margin: 0 auto;
         }
 
-        .cert-card {
-          display: flex;
-          align-items: center;
-          gap: 2rem;
-          padding: 2rem !important;
-          border-radius: var(--border-radius-md);
-          background: rgba(10, 10, 16, 0.35);
-        }
-
-        .cert-badge-outer {
-          width: 50px;
-          height: 50px;
-          border-radius: 50%;
-          background: rgba(16, 185, 129, 0.04);
-          border: 1px solid rgba(16, 185, 129, 0.15);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-shrink: 0;
-          box-shadow: 0 0 15px rgba(16, 185, 129, 0.1);
-        }
-
-        .cert-content-block {
-          display: flex;
-          flex-direction: column;
-          flex-grow: 1;
-        }
-
-        .cert-title-text {
-          font-family: var(--font-title);
-          font-size: 1.2rem;
-          font-weight: 600;
-          color: var(--text-primary);
-          margin-bottom: 0.35rem;
-          letter-spacing: -0.01em;
-        }
-
-        .cert-meta-row {
-          display: flex;
-          flex-wrap: wrap;
-          align-items: center;
-          gap: 0.5rem;
-          font-size: 0.85rem;
-          color: var(--text-secondary);
-          margin-bottom: 0.4rem;
-        }
-
-        .cert-issuer-label {
-          font-weight: 500;
-          color: var(--accent-purple);
-        }
-
-        .cert-split-dot {
-          color: var(--text-muted);
-        }
-
-        .cert-issue-date {
-          color: var(--text-secondary);
-        }
-
-        .cert-credential-id {
-          font-family: var(--font-body);
-          font-size: 0.7rem;
-          font-weight: 600;
-          color: var(--text-muted);
-          letter-spacing: 0.05em;
-        }
-
-        @media (max-width: 576px) {
-          .cert-card {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 1.25rem;
-            padding: 1.5rem !important;
+        @media (min-width: 640px) {
+          .certs-grid {
+            grid-template-columns: repeat(3, 1fr);
           }
+        }
+
+        .cert-card:hover {
+          border-color: rgba(255,255,255,0.12) !important;
         }
       `}</style>
     </section>

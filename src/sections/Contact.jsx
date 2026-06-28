@@ -90,8 +90,8 @@ export const Contact = () => {
       const rect = card.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
-      card.style.setProperty('--mouse-x', `${x}px`);
-      card.style.setProperty('--mouse-y', `${y}px`);
+      card.style.setProperty('--x', `${x}px`);
+      card.style.setProperty('--y', `${y}px`);
     };
 
     window.addEventListener('mousemove', handleMouseMove);
@@ -120,7 +120,7 @@ export const Contact = () => {
               {/* Email channel */}
               <div className="contact-channel-block">
                 <div className="contact-icon-wrapper">
-                  <Mail size={18} color="#6366f1" />
+                  <Mail size={18} color="#e8ff6b" />
                 </div>
                 <div className="contact-channel-details">
                   <span className="contact-details-label">Direct Inbox</span>
@@ -133,7 +133,7 @@ export const Contact = () => {
               {/* Location channel */}
               <div className="contact-channel-block">
                 <div className="contact-icon-wrapper">
-                  <MapPin size={18} color="#10b981" />
+                  <MapPin size={18} color="#7c6af7" />
                 </div>
                 <div className="contact-channel-details">
                   <span className="contact-details-label">Operational Hub</span>
@@ -151,65 +151,74 @@ export const Contact = () => {
             transition={{ duration: 0.8, delay: 0.1 }}
             className="contact-form-col"
           >
-            <div ref={formCardRef} className="glass-card contact-form-card">
-              <form onSubmit={handleSubmit} noValidate>
+            <div ref={formCardRef} className="contact-form-card surface-spotlight">
+              <div
+                aria-hidden="true"
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'radial-gradient(500px circle at var(--x, -999px) var(--y, -999px), rgba(232, 255, 107, 0.04), transparent 50%)',
+                  pointerEvents: 'none',
+                }}
+              />
+              <form onSubmit={handleSubmit} noValidate style={{ position: 'relative', zIndex: 1 }}>
                 {/* Name */}
-                <div className={`form-group ${formData.name ? 'has-value' : ''} ${errors.name ? 'has-error' : ''}`}>
+                <div className={`form-field ${formData.name ? 'filled' : ''} ${errors.name ? 'has-error' : ''}`}>
                   <input
                     type="text"
                     id="name"
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    className="form-input"
+                    className="form-input-base"
                     required
                   />
-                  <label htmlFor="name" className="form-label">Name / Company</label>
-                  {errors.name && <span className="form-error-msg">{errors.name}</span>}
+                  <label htmlFor="name" className="form-label-float">Name / Company</label>
+                  {errors.name && <span className="form-error-text">{errors.name}</span>}
                 </div>
 
                 {/* Email */}
-                <div className={`form-group ${formData.email ? 'has-value' : ''} ${errors.email ? 'has-error' : ''}`}>
+                <div className={`form-field ${formData.email ? 'filled' : ''} ${errors.email ? 'has-error' : ''}`}>
                   <input
                     type="email"
                     id="email"
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className="form-input"
+                    className="form-input-base"
                     required
                   />
-                  <label htmlFor="email" className="form-label">Email Address</label>
-                  {errors.email && <span className="form-error-msg">{errors.email}</span>}
+                  <label htmlFor="email" className="form-label-float">Email Address</label>
+                  {errors.email && <span className="form-error-text">{errors.email}</span>}
                 </div>
 
                 {/* Subject */}
-                <div className={`form-group ${formData.subject_meta ? 'has-value' : ''} ${errors.subject_meta ? 'has-error' : ''}`}>
+                <div className={`form-field ${formData.subject_meta ? 'filled' : ''} ${errors.subject_meta ? 'has-error' : ''}`}>
                   <input
                     type="text"
                     id="subject_meta"
                     name="subject_meta"
                     value={formData.subject_meta}
                     onChange={handleChange}
-                    className="form-input"
+                    className="form-input-base"
                     required
                   />
-                  <label htmlFor="subject_meta" className="form-label">Subject / Topic</label>
-                  {errors.subject_meta && <span className="form-error-msg">{errors.subject_meta}</span>}
+                  <label htmlFor="subject_meta" className="form-label-float">Subject / Topic</label>
+                  {errors.subject_meta && <span className="form-error-text">{errors.subject_meta}</span>}
                 </div>
 
                 {/* Message */}
-                <div className={`form-group ${formData.message ? 'has-value' : ''} ${errors.message ? 'has-error' : ''}`}>
+                <div className={`form-field ${formData.message ? 'filled' : ''} ${errors.message ? 'has-error' : ''}`}>
                   <textarea
                     id="message"
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
-                    className="form-textarea"
+                    className="form-textarea-base"
                     required
                   />
-                  <label htmlFor="message" className="form-label">Your Message...</label>
-                  {errors.message && <span className="form-error-msg">{errors.message}</span>}
+                  <label htmlFor="message" className="form-label-float">Your Message...</label>
+                  {errors.message && <span className="form-error-text">{errors.message}</span>}
                 </div>
 
                 {/* Action button */}
@@ -218,7 +227,7 @@ export const Contact = () => {
                     <button
                       type="submit"
                       disabled={status === 'sending'}
-                      className="btn btn-primary"
+                      className="btn btn-lime"
                       style={{ width: '100%' }}
                     >
                       <Send size={16} style={{ marginRight: '0.6rem' }} />
@@ -234,7 +243,7 @@ export const Contact = () => {
                       initial={{ opacity: 0, y: 15 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0 }}
-                      className="alert-box alert-success"
+                      className="alert alert-success"
                     >
                       <CheckCircle2 size={16} />
                       <span>Message successfully delivered to Yaswanth's inbox!</span>
@@ -245,7 +254,7 @@ export const Contact = () => {
                       initial={{ opacity: 0, y: 15 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0 }}
-                      className="alert-box alert-error"
+                      className="alert alert-error"
                     >
                       <AlertTriangle size={16} />
                       <span>Failed to submit. Please verify details and try again.</span>
@@ -268,12 +277,12 @@ export const Contact = () => {
         }
 
         .contact-title-glow {
-          font-family: var(--font-title);
+          font-family: var(--font-display);
           font-size: clamp(2.2rem, 5vw, 3.5rem);
-          font-weight: 800;
+          font-weight: 700;
           line-height: 1.15;
           letter-spacing: -0.03em;
-          background: linear-gradient(135deg, #ffffff 40%, #94a3b8 100%);
+          background: var(--gradient-text);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           margin-bottom: 1.5rem;
@@ -285,7 +294,7 @@ export const Contact = () => {
           color: var(--text-secondary);
           line-height: 1.65;
           margin-bottom: 3.5rem;
-          font-weight: 300;
+          font-weight: 400;
           max-width: 540px;
         }
 
@@ -304,7 +313,7 @@ export const Contact = () => {
         .contact-icon-wrapper {
           width: 44px;
           height: 44px;
-          border-radius: var(--border-radius-sm);
+          border-radius: var(--radius-sm);
           background: rgba(255, 255, 255, 0.02);
           border: 1px solid rgba(255, 255, 255, 0.05);
           display: flex;
@@ -318,17 +327,17 @@ export const Contact = () => {
         }
 
         .contact-details-label {
-          font-family: var(--font-body);
-          font-size: 0.72rem;
+          font-family: var(--font-mono);
+          font-size: 0.68rem;
           text-transform: uppercase;
           letter-spacing: 0.1em;
-          color: var(--text-muted);
+          color: var(--text-secondary);
           margin-bottom: 0.25rem;
           font-weight: 500;
         }
 
         .contact-details-value {
-          font-family: var(--font-title);
+          font-family: var(--font-display);
           font-size: 1.05rem;
           font-weight: 600;
           color: var(--text-primary);
@@ -336,101 +345,17 @@ export const Contact = () => {
         }
 
         .link-highlight:hover {
-          color: var(--accent-purple);
+          color: var(--lime);
         }
 
         .contact-form-card {
-          padding: 3rem 2.5rem !important;
-          border-radius: var(--border-radius-lg);
-          background: rgba(10, 10, 16, 0.35);
-        }
-
-        /* Interactive line fields */
-        .form-group {
+          padding: 3rem 2.5rem;
+          border-radius: var(--radius-lg);
+          background: rgba(11, 12, 18, 0.4);
+          border: 1px solid rgba(255, 255, 255, 0.05);
+          backdrop-filter: var(--glass-blur);
           position: relative;
-          margin-bottom: 2.2rem;
-        }
-
-        .form-input, .form-textarea {
-          width: 100%;
-          background: transparent;
-          border: none;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-          padding: 0.6rem 0;
-          font-family: var(--font-body);
-          font-size: 0.95rem;
-          color: var(--text-primary);
-          transition: all 0.3s ease;
-          outline: none;
-        }
-
-        .form-textarea {
-          height: 100px;
-          resize: none;
-        }
-
-        .form-label {
-          position: absolute;
-          left: 0;
-          top: 0.6rem;
-          color: var(--text-muted);
-          font-size: 0.95rem;
-          pointer-events: none;
-          transition: all 0.3s ease;
-        }
-
-        /* Floating transformations */
-        .form-input:focus ~ .form-label,
-        .form-group.has-value .form-label {
-          top: -1.25rem;
-          font-size: 0.75rem;
-          color: var(--accent-purple);
-          letter-spacing: 0.05em;
-          text-transform: uppercase;
-        }
-
-        .form-input:focus, .form-textarea:focus {
-          border-color: var(--accent-purple);
-        }
-
-        .form-group.has-error .form-input,
-        .form-group.has-error .form-textarea {
-          border-color: #ef4444;
-        }
-
-        .form-group.has-error .form-label {
-          color: #ef4444 !important;
-        }
-
-        .form-error-msg {
-          font-size: 0.72rem;
-          color: #ef4444;
-          display: block;
-          margin-top: 0.35rem;
-        }
-
-        /* Alert notifications */
-        .alert-box {
-          display: flex;
-          align-items: center;
-          gap: 0.6rem;
-          padding: 0.85rem 1rem;
-          border-radius: var(--border-radius-sm);
-          font-size: 0.85rem;
-          margin-top: 1.5rem;
-          font-weight: 500;
-        }
-
-        .alert-success {
-          background: rgba(16, 185, 129, 0.06);
-          border: 1px solid rgba(16, 185, 129, 0.15);
-          color: #10b981;
-        }
-
-        .alert-error {
-          background: rgba(239, 68, 68, 0.06);
-          border: 1px solid rgba(239, 68, 68, 0.15);
-          color: #ef4444;
+          overflow: hidden;
         }
 
         @media (min-width: 992px) {

@@ -1,261 +1,186 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { SectionHeader } from '../components/SectionHeader';
 import { portfolioData } from '../data/portfolioData';
 
+const ACCENT_COLORS = ['#e8ff6b', '#7c6af7', '#4cc9f0'];
+
 export const Experience = () => {
   const experiences = portfolioData.experience;
-  const containerRef = useRef(null);
-  const cardsRef = useRef([]);
+  const sectionRef = useRef(null);
 
-  // Bind vertical progress line directly to scroll coordinates
   const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start center", "end center"]
+    target: sectionRef,
+    offset: ['start 80%', 'end 20%'],
   });
 
-  const pathHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
-
-  // Spotlight mouse track effect
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      cardsRef.current.forEach((card) => {
-        if (!card) return;
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        card.style.setProperty('--mouse-x', `${x}px`);
-        card.style.setProperty('--mouse-y', `${y}px`);
-      });
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
-  const cardVariants = {
-    hidden: (isLeft) => ({
-      opacity: 0,
-      x: isLeft ? -45 : 45,
-      scale: 0.95
-    }),
-    visible: {
-      opacity: 1,
-      x: 0,
-      scale: 1,
-      transition: {
-        duration: 0.85,
-        ease: [0.25, 1, 0.5, 1]
-      }
-    }
-  };
+  const lineHeight = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
 
   return (
-    <section id="experience" className="section" ref={containerRef} style={{ position: 'relative' }}>
+    <section id="experience" className="section" ref={sectionRef} style={{ position: 'relative' }}>
       <div className="container">
         <SectionHeader
           index="04"
           title="Timeline Journey"
-          subtitle="My professional contributions, architectural roles, and engineering milestones."
+          subtitle="Professional contributions, architectural roles, and engineering milestones."
+          align="left"
         />
 
-        <div className="experience-timeline">
-          {/* Vertical progress line track */}
-          <div className="timeline-line-track">
+        <div className="exp-timeline-wrap">
+          {/* Animated vertical line */}
+          <div className="exp-line-track" aria-hidden="true">
             <motion.div
-              style={{ height: pathHeight }}
-              className="timeline-line-fill"
+              className="exp-line-fill"
+              style={{ height: lineHeight }}
             />
           </div>
 
-          {experiences.map((exp, index) => {
-            const isLeft = index % 2 === 0;
-            return (
-              <div
-                key={exp.company + exp.title}
-                className={`timeline-item-container ${isLeft ? 'left-item' : 'right-item'}`}
-              >
-                {/* Scroll-scale nodes on central line */}
-                <div className="timeline-node-wrapper">
-                  <motion.div
-                    className="timeline-node"
+          {/* Entries */}
+          <div className="exp-entries">
+            {experiences.map((exp, index) => {
+              const accent = ACCENT_COLORS[index % ACCENT_COLORS.length];
+              return (
+                <motion.div
+                  key={`${exp.company}-${exp.title}`}
+                  className="exp-entry"
+                  initial={{ opacity: 0, x: -30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: '-10%' }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.05 * index }}
+                >
+                  {/* Node on the line */}
+                  <div
+                    className="exp-node"
+                    aria-hidden="true"
                     style={{
-                      borderColor: index % 2 === 0 ? '#6366f1' : '#10b981',
-                      boxShadow: index % 2 === 0 ? '0 0 15px rgba(99,102,241,0.5)' : '0 0 15px rgba(16,185,129,0.5)',
+                      borderColor: accent,
+                      boxShadow: `0 0 12px ${accent}50`,
                     }}
                   />
-                </div>
 
-                {/* Experience Detail Bento Card */}
-                <motion.div
-                  custom={isLeft}
-                  variants={cardVariants}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "-10%" }}
-                  ref={(el) => (cardsRef.current[index] = el)}
-                  className="glass-card timeline-card"
-                >
-                  <div className="timeline-card-header">
-                    <div>
-                      <h3 className="timeline-role">{exp.title}</h3>
-                      <span className="timeline-company">{exp.company}</span>
-                    </div>
-                    <span className="timeline-duration">{exp.duration}</span>
+                  {/* Card */}
+                  <div
+                    className="exp-card"
+                    style={{
+                      background: 'rgba(11,12,18,0.5)',
+                      border: '1px solid rgba(255,255,255,0.06)',
+                      borderRadius: '18px',
+                      padding: '2rem',
+                      backdropFilter: 'blur(12px)',
+                      borderLeft: `2px solid ${accent}30`,
+                      transition: 'border-color 0.3s ease',
+                    }}
+                  >
+                    {/* Duration tag */}
+                    <span
+                      style={{
+                        display: 'inline-block',
+                        fontFamily: "'DM Mono', monospace",
+                        fontSize: '0.68rem',
+                        fontWeight: 500,
+                        color: accent,
+                        letterSpacing: '0.1em',
+                        padding: '0.25rem 0.65rem',
+                        background: `${accent}0e`,
+                        border: `1px solid ${accent}25`,
+                        borderRadius: '100px',
+                        marginBottom: '0.75rem',
+                      }}
+                    >
+                      {exp.duration}
+                    </span>
+
+                    <h3
+                      style={{
+                        fontFamily: "'Space Grotesk', sans-serif",
+                        fontSize: '1.2rem',
+                        fontWeight: 700,
+                        color: '#f0f0f5',
+                        letterSpacing: '-0.02em',
+                        marginBottom: '0.25rem',
+                      }}
+                    >
+                      {exp.title}
+                    </h3>
+
+                    <p
+                      style={{
+                        fontFamily: "'DM Mono', monospace",
+                        fontSize: '0.78rem',
+                        color: accent,
+                        marginBottom: '1rem',
+                        letterSpacing: '0.03em',
+                      }}
+                    >
+                      @ {exp.company}
+                    </p>
+
+                    <p
+                      style={{
+                        fontFamily: "'DM Sans', sans-serif",
+                        fontSize: '0.92rem',
+                        color: '#7a7a8c',
+                        lineHeight: 1.7,
+                      }}
+                    >
+                      {exp.desc}
+                    </p>
                   </div>
-                  <p className="timeline-desc">{exp.desc}</p>
                 </motion.div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </div>
 
       <style>{`
-        .experience-timeline {
+        .exp-timeline-wrap {
           position: relative;
-          max-width: 960px;
-          margin: 0 auto;
-          padding: 2.5rem 0;
+          max-width: 800px;
         }
 
-        .timeline-line-track {
+        .exp-line-track {
           position: absolute;
-          left: 18px;
+          left: 0;
           top: 0;
-          height: 100%;
+          bottom: 0;
           width: 2px;
-          background: rgba(255, 255, 255, 0.04);
-          transform: translateX(-50%);
+          background: rgba(255,255,255,0.04);
+          border-radius: 2px;
+          overflow: hidden;
         }
 
-        .timeline-line-fill {
+        .exp-line-fill {
           width: 100%;
-          background: linear-gradient(180deg, #6366f1 0%, #06b6d4 50%, #10b981 100%);
+          background: linear-gradient(180deg, #e8ff6b 0%, #7c6af7 50%, #4cc9f0 100%);
           transform-origin: top;
         }
 
-        .timeline-item-container {
-          position: relative;
-          width: 100%;
-          padding-left: 48px;
-          margin-bottom: 4rem;
+        .exp-entries {
+          padding-left: 2.5rem;
           display: flex;
-          justify-content: flex-start;
+          flex-direction: column;
+          gap: 2.5rem;
         }
 
-        .timeline-node-wrapper {
+        .exp-entry {
+          position: relative;
+        }
+
+        .exp-node {
           position: absolute;
-          left: 18px;
-          top: 36px;
-          transform: translate(-50%, -50%);
-          z-index: 10;
-        }
-
-        .timeline-node {
+          left: -2.72rem;
+          top: 1.5rem;
           width: 14px;
           height: 14px;
           border-radius: 50%;
-          background: #030306;
-          border: 3px solid #6366f1;
+          background: #050508;
+          border: 2.5px solid #e8ff6b;
+          z-index: 2;
         }
 
-        .timeline-card {
-          width: 100%;
-          padding: 2.2rem !important;
-          border-radius: var(--border-radius-lg);
-          background: rgba(10, 10, 16, 0.35);
-        }
-
-        .timeline-card-header {
-          display: flex;
-          flex-direction: column;
-          gap: 0.6rem;
-          margin-bottom: 1.25rem;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-          padding-bottom: 1.25rem;
-        }
-
-        .timeline-role {
-          font-family: var(--font-title);
-          font-weight: 700;
-          font-size: 1.3rem;
-          color: var(--text-primary);
-          letter-spacing: -0.01em;
-        }
-
-        .timeline-company {
-          font-family: var(--font-body);
-          font-size: 0.92rem;
-          color: var(--accent-purple);
-          font-weight: 500;
-        }
-
-        .timeline-item-container:nth-child(even) .timeline-company {
-          color: var(--accent-mint);
-        }
-
-        .timeline-duration {
-          font-family: var(--font-title);
-          font-size: 0.8rem;
-          font-weight: 600;
-          color: var(--text-secondary);
-          padding: 0.3rem 0.8rem;
-          background: rgba(255, 255, 255, 0.02);
-          border: 1px solid rgba(255, 255, 255, 0.05);
-          border-radius: 50px;
-          width: fit-content;
-        }
-
-        .timeline-desc {
-          font-family: var(--font-body);
-          font-size: 0.95rem;
-          color: var(--text-secondary);
-          line-height: 1.65;
-          font-weight: 300;
-        }
-
-        @media (min-width: 820px) {
-          .timeline-line-track {
-            left: 50%;
-          }
-
-          .timeline-node-wrapper {
-            left: 50%;
-          }
-
-          .timeline-item-container {
-            width: 50%;
-            padding-left: 0;
-          }
-
-          .left-item {
-            left: 0;
-            padding-right: 50px;
-            justify-content: flex-end;
-            text-align: right;
-          }
-
-          .left-item .timeline-card-header {
-            align-items: flex-end;
-          }
-
-          .right-item {
-            left: 50%;
-            padding-left: 50px;
-            justify-content: flex-start;
-          }
-
-          .right-item .timeline-card-header {
-            align-items: flex-start;
-          }
-
-          .timeline-card-header {
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1.5rem;
-          }
+        .exp-card:hover {
+          border-color: rgba(255,255,255,0.12) !important;
         }
       `}</style>
     </section>

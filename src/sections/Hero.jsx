@@ -1,251 +1,439 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
+import { ArrowDown, Github, Linkedin } from 'lucide-react';
 import { MagneticButton } from '../components/MagneticButton';
+import { portfolioData } from '../data/portfolioData';
 
 export const Hero = () => {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.4,
-      }
-    }
-  };
+  const { name, subtitle, githubUrl, linkedinUrl, experienceYears, projectsCompleted } = portfolioData.personalInfo;
+  const firstNameRef = useRef(null);
+  const lastNameRef = useRef(null);
 
-  const itemVariants = {
-    hidden: { y: 40, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.9,
-        ease: [0.215, 0.61, 0.355, 1] // Custom easeOutCubic
-      }
-    }
-  };
+  // Gentle mouse parallax on name rows
+  useEffect(() => {
+    const first = firstNameRef.current;
+    const last = lastNameRef.current;
+    if (!first || !last) return;
 
-  const wordRevealVariants = {
-    hidden: { y: "110%" },
-    visible: {
-      y: 0,
-      transition: {
-        duration: 1.0,
-        ease: [0.76, 0, 0.24, 1]
-      }
-    }
-  };
+    const onMove = (e) => {
+      const nx = (e.clientX / window.innerWidth - 0.5) * 18;
+      const ny = (e.clientY / window.innerHeight - 0.5) * 8;
+      first.style.transform = `translate(${nx * 0.6}px, ${ny * 0.4}px)`;
+      last.style.transform = `translate(${nx * 0.35}px, ${ny * 0.25}px)`;
+    };
 
-  const handleCtaClick = (e, targetId) => {
+    window.addEventListener('mousemove', onMove);
+    return () => window.removeEventListener('mousemove', onMove);
+  }, []);
+
+  const handleScroll = (e, target) => {
     e.preventDefault();
-    const targetElement = document.querySelector(targetId);
-    if (!targetElement) return;
-    
-    const offset = 100;
-    const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - offset;
-    
-    window.scrollTo({
-      top: targetPosition,
-      behavior: 'smooth'
-    });
+    const el = document.querySelector(target);
+    if (!el) return;
+    window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 90, behavior: 'smooth' });
   };
 
-  const subtitleText = "Designing immersive digital narratives by blending futuristic WebGL interfaces with robust, full-stack software architecture.";
+  const wordReveal = {
+    hidden: { y: '110%' },
+    visible: (i) => ({
+      y: 0,
+      transition: { duration: 1.1, ease: [0.76, 0, 0.24, 1], delay: 0.2 + i * 0.12 },
+    }),
+  };
+
+  const fadeUp = {
+    hidden: { opacity: 0, y: 24 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.6 + i * 0.1 },
+    }),
+  };
 
   return (
     <section
       id="hero"
       style={{
         minHeight: '100vh',
-        width: '100%',
         display: 'flex',
         alignItems: 'center',
         position: 'relative',
         zIndex: 2,
         overflow: 'hidden',
-        padding: '120px 0 80px 0',
+        padding: '120px 0 80px',
       }}
     >
-      {/* Immersive background lighting grid */}
+      {/* Decorative grid lines */}
       <div
+        aria-hidden="true"
         style={{
           position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          background: 'radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.05) 0%, transparent 60%), radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 60%)',
-          pointerEvents: 'none',
+          inset: 0,
+          backgroundImage: `linear-gradient(rgba(232,255,107,0.015) 1px, transparent 1px),
+                            linear-gradient(90deg, rgba(232,255,107,0.015) 1px, transparent 1px)`,
+          backgroundSize: '80px 80px',
           zIndex: 0,
+          maskImage: 'radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%)',
+          WebkitMaskImage: 'radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%)',
         }}
       />
 
-      <div className="container" style={{ position: 'relative', zIndex: 2 }}>
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          style={{ maxWidth: '920px' }}
-        >
-          {/* Creative Label Tag */}
-          <motion.div
-            variants={itemVariants}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.8rem',
-              marginBottom: '1.5rem'
-            }}
-          >
-            <div style={{ width: '32px', height: '1px', backgroundColor: '#10b981' }} />
-            <span
-              style={{
-                fontFamily: "'Outfit', sans-serif",
-                fontSize: '0.85rem',
-                fontWeight: 600,
-                color: '#10b981',
-                letterSpacing: '0.25em',
-                textTransform: 'uppercase',
-              }}
-            >
-              CREATIVE TECHNOLOGIST
-            </span>
-          </motion.div>
-
-          {/* Premium Headline (Mask Reveal) */}
-          <h1
-            style={{
-              fontFamily: "'Syne', sans-serif",
-              fontWeight: 800,
-              fontSize: 'clamp(3rem, 8vw, 6rem)',
-              lineHeight: 1.02,
-              letterSpacing: '-0.04em',
-              marginBottom: '2rem',
-              color: '#f8fafc',
-            }}
-          >
-            <div style={{ overflow: 'hidden', display: 'block' }}>
-              <motion.span 
-                variants={wordRevealVariants}
-                style={{ display: 'inline-block', background: 'linear-gradient(135deg, #ffffff 40%, #94a3b8 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
-              >
-                Yaswanth
-              </motion.span>
-            </div>
-            <div style={{ overflow: 'hidden', display: 'block' }}>
-              <motion.span 
-                variants={wordRevealVariants}
-                style={{ display: 'inline-block', background: 'linear-gradient(135deg, #ffffff 40%, #94a3b8 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
-              >
-                Gokavarapu
-              </motion.span>
-            </div>
-          </h1>
-
-          {/* Tagline Paragraph (Fades up) */}
-          <motion.p
-            variants={itemVariants}
-            style={{
-              fontFamily: "'Inter', sans-serif",
-              fontSize: 'clamp(1.1rem, 2vw, 1.4rem)',
-              color: '#94a3b8',
-              lineHeight: 1.6,
-              marginBottom: '3.5rem',
-              fontWeight: 300,
-              maxWidth: '720px',
-              letterSpacing: '-0.01em'
-            }}
-          >
-            {subtitleText}
-          </motion.p>
-
-          {/* Action CTAs */}
-          <motion.div
-            variants={itemVariants}
-            style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: '1.5rem',
-            }}
-          >
-            <MagneticButton>
-              <a
-                href="#projects"
-                onClick={(e) => handleCtaClick(e, '#projects')}
-                className="btn btn-primary"
-              >
-                Explore Creation
-              </a>
-            </MagneticButton>
-
-            <MagneticButton>
-              <a
-                href="#contact"
-                onClick={(e) => handleCtaClick(e, '#contact')}
-                className="btn btn-secondary"
-              >
-                Transit Message
-              </a>
-            </MagneticButton>
-          </motion.div>
-        </motion.div>
+      {/* Ambient glow orbs */}
+      <div aria-hidden="true" style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
+        <div
+          style={{
+            position: 'absolute',
+            width: '600px',
+            height: '600px',
+            borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(124,106,247,0.08) 0%, transparent 70%)',
+            top: '-10%',
+            left: '-5%',
+          }}
+        />
+        <div
+          style={{
+            position: 'absolute',
+            width: '400px',
+            height: '400px',
+            borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(232,255,107,0.05) 0%, transparent 70%)',
+            bottom: '10%',
+            right: '5%',
+          }}
+        />
       </div>
 
-      {/* Cinematic scroll down icon */}
+      <div className="container" style={{ position: 'relative', zIndex: 2 }}>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr',
+            gap: '3rem',
+            alignItems: 'center',
+          }}
+          className="hero-grid"
+        >
+          {/* Left: Text content */}
+          <div>
+            {/* Top badge */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                padding: '0.35rem 0.85rem',
+                background: 'rgba(232,255,107,0.06)',
+                border: '1px solid rgba(232,255,107,0.2)',
+                borderRadius: '100px',
+                marginBottom: '2.5rem',
+              }}
+            >
+              <span
+                style={{
+                  width: '6px',
+                  height: '6px',
+                  borderRadius: '50%',
+                  background: '#e8ff6b',
+                  animation: 'pulse-dot 2s ease-in-out infinite',
+                  display: 'block',
+                }}
+              />
+              <span
+                style={{
+                  fontFamily: "'DM Mono', monospace",
+                  fontSize: '0.68rem',
+                  fontWeight: 500,
+                  color: '#e8ff6b',
+                  letterSpacing: '0.2em',
+                  textTransform: 'uppercase',
+                }}
+              >
+                Creative Technologist
+              </span>
+            </motion.div>
+
+            {/* Giant headline */}
+            <h1
+              style={{
+                fontFamily: "'Space Grotesk', sans-serif",
+                marginBottom: '2rem',
+                lineHeight: 0.92,
+                letterSpacing: '-0.04em',
+              }}
+            >
+              {/* First name — solid */}
+              <div style={{ overflow: 'hidden', display: 'block' }}>
+                <motion.span
+                  ref={firstNameRef}
+                  custom={0}
+                  variants={wordReveal}
+                  initial="hidden"
+                  animate="visible"
+                  style={{
+                    display: 'block',
+                    fontSize: 'clamp(4.5rem, 12vw, 10rem)',
+                    fontWeight: 700,
+                    color: '#f0f0f5',
+                    willChange: 'transform',
+                    transition: 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+                  }}
+                >
+                  Yaswanth
+                </motion.span>
+              </div>
+
+              {/* Last name — outline */}
+              <div style={{ overflow: 'hidden', display: 'block' }}>
+                <motion.span
+                  ref={lastNameRef}
+                  custom={1}
+                  variants={wordReveal}
+                  initial="hidden"
+                  animate="visible"
+                  style={{
+                    display: 'block',
+                    fontSize: 'clamp(4.5rem, 12vw, 10rem)',
+                    fontWeight: 700,
+                    color: 'transparent',
+                    WebkitTextStroke: '1.5px rgba(240,240,245,0.35)',
+                    paddingLeft: 'clamp(1rem, 3vw, 2.5rem)',
+                    willChange: 'transform',
+                    transition: 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+                  }}
+                >
+                  Gokavarapu
+                </motion.span>
+              </div>
+            </h1>
+
+            {/* Subtitle */}
+            <motion.p
+              custom={0}
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              style={{
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: 'clamp(1rem, 1.5vw, 1.15rem)',
+                color: '#7a7a8c',
+                lineHeight: 1.7,
+                maxWidth: '540px',
+                marginBottom: '3rem',
+                fontWeight: 400,
+              }}
+            >
+              {subtitle}
+            </motion.p>
+
+            {/* CTA Row */}
+            <motion.div
+              custom={1}
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: '1rem',
+                alignItems: 'center',
+              }}
+            >
+              <MagneticButton>
+                <a
+                  href="#projects"
+                  onClick={(e) => handleScroll(e, '#projects')}
+                  className="btn btn-lime"
+                >
+                  View My Work
+                </a>
+              </MagneticButton>
+
+              <MagneticButton>
+                <a
+                  href="#contact"
+                  onClick={(e) => handleScroll(e, '#contact')}
+                  className="btn btn-outline"
+                >
+                  Get in Touch
+                </a>
+              </MagneticButton>
+
+              {/* Social links */}
+              <div style={{ display: 'flex', gap: '0.6rem', marginLeft: '0.5rem' }}>
+                <MagneticButton range={20}>
+                  <a
+                    href={githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="GitHub"
+                    style={{
+                      width: '40px',
+                      height: '40px',
+                      borderRadius: '50%',
+                      background: 'rgba(255,255,255,0.03)',
+                      border: '1px solid rgba(255,255,255,0.08)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#7a7a8c',
+                      transition: 'all 0.25s ease',
+                    }}
+                    data-cursor="hover"
+                  >
+                    <Github size={16} />
+                  </a>
+                </MagneticButton>
+
+                <MagneticButton range={20}>
+                  <a
+                    href={linkedinUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="LinkedIn"
+                    style={{
+                      width: '40px',
+                      height: '40px',
+                      borderRadius: '50%',
+                      background: 'rgba(255,255,255,0.03)',
+                      border: '1px solid rgba(255,255,255,0.08)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#7a7a8c',
+                      transition: 'all 0.25s ease',
+                    }}
+                    data-cursor="hover"
+                  >
+                    <Linkedin size={16} />
+                  </a>
+                </MagneticButton>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Right: Stats panel */}
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="hero-stats-panel"
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '1rem',
+            }}
+          >
+            {[
+              { value: experienceYears, label: 'Years of\nExperience', color: '#e8ff6b' },
+              { value: projectsCompleted, label: 'Projects\nCompleted', color: '#7c6af7' },
+              { value: '99%', label: 'Client\nSatisfaction', color: '#4cc9f0' },
+            ].map((stat, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.0 + i * 0.1, duration: 0.6 }}
+                style={{
+                  background: 'rgba(11, 12, 18, 0.5)',
+                  border: '1px solid rgba(255,255,255,0.06)',
+                  borderRadius: '16px',
+                  padding: '1.25rem 1.5rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '1rem',
+                  backdropFilter: 'blur(12px)',
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontSize: '2.2rem',
+                    fontWeight: 700,
+                    color: stat.color,
+                    letterSpacing: '-0.03em',
+                    lineHeight: 1,
+                    minWidth: '70px',
+                  }}
+                >
+                  {stat.value}
+                </span>
+                <span
+                  style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: '0.8rem',
+                    color: '#7a7a8c',
+                    lineHeight: 1.4,
+                    whiteSpace: 'pre-line',
+                  }}
+                >
+                  {stat.label}
+                </span>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Scroll indicator */}
       <motion.a
         href="#about"
-        onClick={(e) => handleCtaClick(e, '#about')}
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.8, duration: 0.8, repeat: Infinity, repeatType: "reverse" }}
+        onClick={(e) => handleScroll(e, '#about')}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 2, duration: 0.8 }}
         style={{
           position: 'absolute',
-          bottom: '2.5rem',
+          bottom: '2rem',
           left: '50%',
           transform: 'translateX(-50%)',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: '0.6rem',
-          color: '#94a3b8',
-          fontSize: '0.75rem',
-          fontFamily: "'Outfit', sans-serif",
-          letterSpacing: '0.2em',
-          textTransform: 'uppercase',
+          gap: '0.5rem',
           zIndex: 3,
+          color: '#3a3a4a',
         }}
+        aria-label="Scroll to about section"
       >
-        <span>SCROLL DOWN</span>
-        <div
+        <span
           style={{
-            width: '20px',
-            height: '32px',
-            border: '1.5px solid rgba(255, 255, 255, 0.15)',
-            borderRadius: '20px',
-            display: 'flex',
-            justifyContent: 'center',
-            paddingTop: '6px',
+            fontFamily: "'DM Mono', monospace",
+            fontSize: '0.6rem',
+            letterSpacing: '0.3em',
+            textTransform: 'uppercase',
+            writingMode: 'horizontal-lr',
           }}
         >
-          <motion.div
-            animate={{
-              y: [0, 10, 0],
-            }}
-            transition={{
-              duration: 1.6,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-            style={{
-              width: '3px',
-              height: '7px',
-              backgroundColor: '#10b981',
-              borderRadius: '50%',
-            }}
-          />
-        </div>
+          SCROLL
+        </span>
+        <motion.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+        >
+          <ArrowDown size={14} />
+        </motion.div>
       </motion.a>
+
+      <style>{`
+        @media (min-width: 1024px) {
+          .hero-grid {
+            grid-template-columns: 1fr 300px !important;
+          }
+        }
+        @media (max-width: 1023px) {
+          .hero-stats-panel {
+            flex-direction: row !important;
+            flex-wrap: wrap;
+          }
+          .hero-stats-panel > div {
+            flex: 1 1 140px;
+          }
+        }
+      `}</style>
     </section>
   );
 };

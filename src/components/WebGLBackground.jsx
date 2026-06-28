@@ -10,269 +10,150 @@ export const WebGLBackground = () => {
 
     // --- Scene Setup ---
     const scene = new THREE.Scene();
-    
-    // Low fog for deep spatial immersion
-    scene.fog = new THREE.FogExp2('#030306', 0.015);
-
-    const camera = new THREE.PerspectiveCamera(
-      60,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      1000
-    );
-    camera.position.z = 32;
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 0, 4);
 
     const renderer = new THREE.WebGLRenderer({
       canvas,
       alpha: true,
-      antialias: true,
-      powerPreference: "high-performance"
+      antialias: false,
+      powerPreference: 'high-performance',
     });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 
-    // --- Generate Particles ---
-    const PARTICLE_COUNT = 4000;
-    const geometry = new THREE.BufferGeometry();
-    
-    // Coordinate buffers for different shapes
-    const posSphere = new Float32Array(PARTICLE_COUNT * 3);
-    const posHelix = new Float32Array(PARTICLE_COUNT * 3);
-    const posWave = new Float32Array(PARTICLE_COUNT * 3);
-    const posTorus = new Float32Array(PARTICLE_COUNT * 3);
-    
-    const currentPositions = new Float32Array(PARTICLE_COUNT * 3);
-    const colors = new Float32Array(PARTICLE_COUNT * 3);
+    // --- Vertex Shader ---
+    const vertexShader = `
+      uniform float u_time;
+      uniform vec2 u_mouse;
+      varying vec2 v_uv;
+      varying float v_elevation;
 
-    // Color definitions
-    const colorPurple = new THREE.Color('#6366f1');
-    const colorMint = new THREE.Color('#10b981');
-    const colorCyan = new THREE.Color('#06b6d4');
-
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
-      const i3 = i * 3;
-
-      // 1. Sphere position
-      const u = Math.random();
-      const v = Math.random();
-      const theta = u * 2.0 * Math.PI;
-      const phi = Math.acos(2.0 * v - 1.0);
-      const r = 11 + Math.random() * 2.5;
-      posSphere[i3] = r * Math.sin(phi) * Math.cos(theta);
-      posSphere[i3 + 1] = r * Math.sin(phi) * Math.sin(theta);
-      posSphere[i3 + 2] = r * Math.cos(phi);
-
-      // 2. Helix position
-      const t = (i / PARTICLE_COUNT) * 14 * Math.PI;
-      const radius = 7;
-      const strand = i % 2 === 0 ? 0 : Math.PI;
-      posHelix[i3] = radius * Math.cos(t + strand) + (Math.random() - 0.5) * 1.8;
-      posHelix[i3 + 1] = (t - 7 * Math.PI) * 1.3 + (Math.random() - 0.5) * 1.8;
-      posHelix[i3 + 2] = radius * Math.sin(t + strand) + (Math.random() - 0.5) * 1.8;
-
-      // 3. Wave position
-      const x = ((i % 80) - 40) * 0.7;
-      const z = (Math.floor(i / 80) - 25) * 0.7;
-      posWave[i3] = x + (Math.random() - 0.5) * 0.25;
-      posWave[i3 + 1] = Math.sin(x * 0.12) * Math.cos(z * 0.12) * 5.0;
-      posWave[i3 + 2] = z + (Math.random() - 0.5) * 0.25;
-
-      // 4. Torus position
-      const ringRadius = 14;
-      const tubeRadius = 4.5;
-      const uTorus = Math.random() * 2 * Math.PI;
-      const vTorus = Math.random() * 2 * Math.PI;
-      posTorus[i3] = (ringRadius + tubeRadius * Math.cos(vTorus)) * Math.cos(uTorus);
-      posTorus[i3 + 1] = (ringRadius + tubeRadius * Math.cos(vTorus)) * Math.sin(uTorus);
-      posTorus[i3 + 2] = tubeRadius * Math.sin(vTorus);
-
-      // Set initial state coordinates (start as Sphere)
-      currentPositions[i3] = posSphere[i3];
-      currentPositions[i3 + 1] = posSphere[i3 + 1];
-      currentPositions[i3 + 2] = posSphere[i3 + 2];
-
-      // Assign mixed gradient colors
-      const mixRatio = Math.random();
-      let chosenColor;
-      if (mixRatio < 0.45) {
-        chosenColor = colorPurple;
-      } else if (mixRatio < 0.8) {
-        chosenColor = colorMint;
-      } else {
-        chosenColor = colorCyan;
+      // Simplex-like noise
+      vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+      vec2 mod289(vec2 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+      vec3 permute(vec3 x) { return mod289(((x*34.0)+1.0)*x); }
+      float snoise(vec2 v) {
+        const vec4 C = vec4(0.211324865405187, 0.366025403784439, -0.577350269189626, 0.024390243902439);
+        vec2 i  = floor(v + dot(v, C.yy));
+        vec2 x0 = v -   i + dot(i, C.xx);
+        vec2 i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+        vec4 x12 = x0.xyxy + C.xxzz;
+        x12.xy -= i1;
+        i = mod289(i);
+        vec3 p = permute(permute(i.y + vec3(0.0, i1.y, 1.0)) + i.x + vec3(0.0, i1.x, 1.0));
+        vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), 0.0);
+        m = m*m;
+        m = m*m;
+        vec3 x = 2.0 * fract(p * C.www) - 1.0;
+        vec3 h = abs(x) - 0.5;
+        vec3 ox = floor(x + 0.5);
+        vec3 a0 = x - ox;
+        m *= 1.79284291400159 - 0.85373472095314 * (a0*a0+h*h);
+        vec3 g;
+        g.x  = a0.x  * x0.x  + h.x  * x0.y;
+        g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+        return 130.0 * dot(m, g);
       }
 
-      colors[i3] = chosenColor.r;
-      colors[i3 + 1] = chosenColor.g;
-      colors[i3 + 2] = chosenColor.b;
-    }
+      void main() {
+        v_uv = uv;
+        vec2 mouseInfluence = u_mouse * 0.3;
+        float noiseVal = snoise(uv * 2.5 + u_time * 0.12 + mouseInfluence);
+        float noiseVal2 = snoise(uv * 4.0 - u_time * 0.08);
+        v_elevation = noiseVal * 0.5 + noiseVal2 * 0.25;
+        vec3 pos = position;
+        pos.z += v_elevation * 0.6;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+      }
+    `;
 
-    geometry.setAttribute('position', new THREE.BufferAttribute(currentPositions, 3));
-    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    // --- Fragment Shader ---
+    const fragmentShader = `
+      uniform float u_time;
+      varying vec2 v_uv;
+      varying float v_elevation;
 
-    // Custom high-fidelity radial light texture
-    const createHighFidelityTexture = () => {
-      const texCanvas = document.createElement('canvas');
-      texCanvas.width = 32;
-      texCanvas.height = 32;
-      const ctx = texCanvas.getContext('2d');
-      
-      const grad = ctx.createRadialGradient(16, 16, 0, 16, 16, 16);
-      grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
-      grad.addColorStop(0.2, 'rgba(255, 255, 255, 0.8)');
-      grad.addColorStop(0.5, 'rgba(255, 255, 255, 0.15)');
-      grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
-      
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, 32, 32);
-      return new THREE.CanvasTexture(texCanvas);
-    };
+      void main() {
+        // Deep violet to black base
+        vec3 colA = vec3(0.04, 0.03, 0.10); // dark violet
+        vec3 colB = vec3(0.06, 0.04, 0.16); // medium violet
+        vec3 colC = vec3(0.02, 0.08, 0.12); // dark teal
 
-    const material = new THREE.PointsMaterial({
-      size: 0.35,
-      vertexColors: true,
+        float t = v_elevation * 0.5 + 0.5;
+        vec3 col = mix(colA, colB, t);
+        col = mix(col, colC, sin(v_uv.x * 3.14 + u_time * 0.2) * 0.5 + 0.5);
+
+        // Add lime accent at peaks
+        vec3 limeAccent = vec3(0.91, 1.0, 0.42);
+        col += limeAccent * max(v_elevation - 0.3, 0.0) * 0.08;
+
+        // Vignette
+        float dist = length(v_uv - 0.5) * 2.0;
+        col *= 1.0 - smoothstep(0.4, 1.2, dist) * 0.7;
+
+        gl_FragColor = vec4(col, 0.9);
+      }
+    `;
+
+    // --- Geometry: subdivided plane ---
+    const geometry = new THREE.PlaneGeometry(8, 5, 80, 50);
+    const material = new THREE.ShaderMaterial({
+      vertexShader,
+      fragmentShader,
+      uniforms: {
+        u_time: { value: 0 },
+        u_mouse: { value: new THREE.Vector2(0, 0) },
+      },
       transparent: true,
-      opacity: 0.75,
-      map: createHighFidelityTexture(),
-      blending: THREE.AdditiveBlending,
-      depthWrite: false,
+      side: THREE.DoubleSide,
     });
 
-    const points = new THREE.Points(geometry, material);
-    scene.add(points);
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.rotation.x = -Math.PI * 0.15;
+    scene.add(mesh);
 
-    // --- Floating wireframe geometric grid ---
-    const wireframeGeo = new THREE.IcosahedronGeometry(20, 2);
-    const wireframeMat = new THREE.MeshBasicMaterial({
-      color: '#6366f1',
-      wireframe: true,
-      transparent: true,
-      opacity: 0.05,
-      blending: THREE.AdditiveBlending
-    });
-    const wireframeMesh = new THREE.Mesh(wireframeGeo, wireframeMat);
-    scene.add(wireframeMesh);
-
-    // --- Ambient Lights ---
-    const ambientLight = new THREE.AmbientLight('#ffffff', 0.2);
-    scene.add(ambientLight);
-
-    const dirLight1 = new THREE.DirectionalLight('#6366f1', 0.6);
-    dirLight1.position.set(10, 20, 10);
-    scene.add(dirLight1);
-
-    // --- Mouse & Position Tracking ---
-    const mouse = { x: 0, y: 0 };
-    const mouseLerped = { x: 0, y: 0 };
+    // --- Mouse tracking ---
+    const mouse = new THREE.Vector2(0, 0);
+    const mouseLerped = new THREE.Vector2(0, 0);
 
     const onMouseMove = (e) => {
       mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
       mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
     };
-
     window.addEventListener('mousemove', onMouseMove);
 
-    // --- Scroll Percent tracking ---
-    let scrollPercent = 0;
-    const onScroll = () => {
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      if (docHeight <= 0) return;
-      scrollPercent = window.scrollY / docHeight;
-    };
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-
-    // --- Resize handler ---
+    // --- Resize ---
     const onResize = () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
     };
-
     window.addEventListener('resize', onResize);
 
-    // --- Animation loop ---
+    // --- Animation Loop ---
     const clock = new THREE.Clock();
     let animId;
-
-    const lerp = (start, end, amt) => (1 - amt) * start + amt * end;
+    const lerp = (a, b, t) => a + (b - a) * t;
 
     const animate = () => {
       animId = requestAnimationFrame(animate);
-
       const time = clock.getElapsedTime();
-
-      // Mouse Parallax with lag
-      mouseLerped.x = lerp(mouseLerped.x, mouse.x * 2.8, 0.04);
-      mouseLerped.y = lerp(mouseLerped.y, mouse.y * 2.8, 0.04);
-
-      camera.position.x = mouseLerped.x;
-      camera.position.y = mouseLerped.y;
-      camera.lookAt(scene.position);
-
-      // Slow organic rotations
-      points.rotation.y = time * 0.025;
-      points.rotation.x = time * 0.008;
-      
-      wireframeMesh.rotation.y = -time * 0.015;
-      wireframeMesh.rotation.x = time * 0.005;
-
-      // Morphing updates
-      // Map scrollPercent (0 to 1) into 3 segments:
-      // Segment 0: Sphere -> Helix
-      // Segment 1: Helix -> Wave
-      // Segment 2: Wave -> Torus
-      const progress = scrollPercent * 3;
-      const segment = Math.min(Math.floor(progress), 2);
-      const segmentFactor = progress - segment;
-
-      const posAttr = geometry.attributes.position;
-      
-      for (let i = 0; i < PARTICLE_COUNT; i++) {
-        const i3 = i * 3;
-        let x1, y1, z1, x2, y2, z2;
-
-        if (segment === 0) {
-          x1 = posSphere[i3]; y1 = posSphere[i3 + 1]; z1 = posSphere[i3 + 2];
-          x2 = posHelix[i3];  y2 = posHelix[i3 + 1];  z2 = posHelix[i3 + 2];
-        } else if (segment === 1) {
-          x1 = posHelix[i3];  y1 = posHelix[i3 + 1];  z1 = posHelix[i3 + 2];
-          x2 = posWave[i3];   y2 = posWave[i3 + 1];   z2 = posWave[i3 + 2];
-        } else {
-          x1 = posWave[i3];   y1 = posWave[i3 + 1];   z1 = posWave[i3 + 2];
-          x2 = posTorus[i3];  y2 = posTorus[i3 + 1];  z2 = posTorus[i3 + 2];
-        }
-
-        // Segment Interpolation
-        const targetX = lerp(x1, x2, segmentFactor);
-        const targetY = lerp(y1, y2, segmentFactor);
-        const targetZ = lerp(z1, z2, segmentFactor);
-
-        // Fluid organic wave motion
-        const waveOffset = Math.sin(time * 0.6 + targetX * 0.12) * 0.18;
-        
-        posAttr.array[i3] = lerp(posAttr.array[i3], targetX, 0.08);
-        posAttr.array[i3 + 1] = lerp(posAttr.array[i3 + 1], targetY + waveOffset, 0.08);
-        posAttr.array[i3 + 2] = lerp(posAttr.array[i3 + 2], targetZ, 0.08);
-      }
-      
-      posAttr.needsUpdate = true;
+      mouseLerped.x = lerp(mouseLerped.x, mouse.x, 0.03);
+      mouseLerped.y = lerp(mouseLerped.y, mouse.y, 0.03);
+      material.uniforms.u_time.value = time;
+      material.uniforms.u_mouse.value = mouseLerped;
       renderer.render(scene, camera);
     };
-
     animate();
 
-    // --- Cleanup ---
     return () => {
       cancelAnimationFrame(animId);
       window.removeEventListener('mousemove', onMouseMove);
-      window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onResize);
-      renderer.dispose();
       geometry.dispose();
       material.dispose();
-      wireframeGeo.dispose();
-      wireframeMat.dispose();
+      renderer.dispose();
     };
   }, []);
 
@@ -287,7 +168,7 @@ export const WebGLBackground = () => {
         height: '100vh',
         zIndex: 1,
         pointerEvents: 'none',
-        mixBlendMode: 'screen',
+        opacity: 0.6,
       }}
     />
   );

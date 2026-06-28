@@ -1,75 +1,44 @@
-import React, { useRef, useEffect } from 'react';
-import gsap from 'gsap';
+import React, { useRef, useCallback } from 'react';
 
-export const MagneticButton = ({ children, range = 35, speed = 1, tolerance = 0.35 }) => {
-  const containerRef = useRef(null);
+export const MagneticButton = ({ children, range = 40, strength = 0.35 }) => {
+  const wrapRef = useRef(null);
+  const animRef = useRef(null);
 
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
+  const onMouseMove = useCallback((e) => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const dx = e.clientX - cx;
+    const dy = e.clientY - cy;
+    const dist = Math.hypot(dx, dy);
 
-    const onMouseMove = (e) => {
-      const rect = container.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-
-      // Mouse distance from center
-      const distanceX = e.clientX - centerX;
-      const distanceY = e.clientY - centerY;
-      
-      const distance = Math.hypot(distanceX, distanceY);
-
-      if (distance < range) {
-        // Apply magnetic pull proportional to proximity
-        const pullX = distanceX * tolerance;
-        const pullY = distanceY * tolerance;
-        
-        gsap.to(container, {
-          x: pullX,
-          y: pullY,
-          duration: 0.3,
-          ease: "power2.out",
-          overwrite: "auto"
-        });
-      } else {
-        // Return home if mouse is within element bounds but past magnetic range
-        gsap.to(container, {
-          x: 0,
-          y: 0,
-          duration: 0.5,
-          ease: "elastic.out(1, 0.3)",
-          overwrite: "auto"
-        });
-      }
-    };
-
-    const onMouseLeave = () => {
-      // Elastic snap back to origin
-      gsap.to(container, {
-        x: 0,
-        y: 0,
-        duration: 0.6,
-        ease: "elastic.out(1.1, 0.4)",
-        overwrite: "auto"
+    if (dist < range + 80) {
+      const x = dx * strength;
+      const y = dy * strength;
+      cancelAnimationFrame(animRef.current);
+      animRef.current = requestAnimationFrame(() => {
+        el.style.transform = `translate(${x}px, ${y}px)`;
+        el.style.transition = 'transform 0.1s ease';
       });
-    };
+    }
+  }, [range, strength]);
 
-    container.addEventListener('mousemove', onMouseMove);
-    container.addEventListener('mouseleave', onMouseLeave);
-
-    return () => {
-      container.removeEventListener('mousemove', onMouseMove);
-      container.removeEventListener('mouseleave', onMouseLeave);
-    };
-  }, [range, tolerance]);
+  const onMouseLeave = useCallback(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    cancelAnimationFrame(animRef.current);
+    el.style.transform = 'translate(0, 0)';
+    el.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+  }, []);
 
   return (
     <div
-      ref={containerRef}
-      style={{
-        display: 'inline-block',
-        willChange: 'transform',
-      }}
+      ref={wrapRef}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+      style={{ display: 'inline-flex' }}
     >
       {children}
     </div>

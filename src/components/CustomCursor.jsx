@@ -1,219 +1,75 @@
-import React, { useEffect, useRef, useState } from 'react';
-import gsap from 'gsap';
+import React, { useEffect, useRef } from 'react';
 
 export const CustomCursor = () => {
   const dotRef = useRef(null);
   const ringRef = useRef(null);
-  const textRef = useRef(null);
-  const [cursorText, setCursorText] = useState('');
+  const posRef = useRef({ x: -999, y: -999 });
+  const ringPosRef = useRef({ x: -999, y: -999 });
+  const rafRef = useRef(null);
 
   useEffect(() => {
+    // Only enable on non-touch devices
+    if (window.matchMedia('(hover: none) and (pointer: coarse)').matches) return;
+
     const dot = dotRef.current;
     const ring = ringRef.current;
-    const textEl = textRef.current;
     if (!dot || !ring) return;
 
-    // Set initial positions offscreen
-    gsap.set([dot, ring], { xPercent: -50, yPercent: -50, x: -100, y: -100 });
-    gsap.set(ring, { scale: 1 });
-    gsap.set(dot, { scale: 1 });
+    const lerp = (a, b, t) => a + (b - a) * t;
 
     const onMouseMove = (e) => {
-      const { clientX: x, clientY: y } = e;
-      
-      // 中央のドットは素早く追従
-      gsap.to(dot, { x, y, duration: 0.1, overwrite: "auto" });
-      
-      // 外側のリングはイージングで追従
-      gsap.to(ring, { x, y, duration: 0.35, ease: "power2.out", overwrite: "auto" });
+      posRef.current = { x: e.clientX, y: e.clientY };
+      if (dot) {
+        dot.style.left = `${e.clientX}px`;
+        dot.style.top = `${e.clientY}px`;
+      }
     };
 
-    const onMouseDown = () => {
-      gsap.to(dot, { scale: 0.7, duration: 0.15 });
-      gsap.to(ring, { scale: 0.85, duration: 0.15 });
+    const animate = () => {
+      ringPosRef.current.x = lerp(ringPosRef.current.x, posRef.current.x, 0.1);
+      ringPosRef.current.y = lerp(ringPosRef.current.y, posRef.current.y, 0.1);
+      if (ring) {
+        ring.style.left = `${ringPosRef.current.x}px`;
+        ring.style.top = `${ringPosRef.current.y}px`;
+      }
+      rafRef.current = requestAnimationFrame(animate);
     };
 
-    const onMouseUp = () => {
-      gsap.to(dot, { scale: 1, duration: 0.2 });
-      gsap.to(ring, { scale: 1, duration: 0.2 });
-    };
-
-    const onMouseLeaveWindow = () => {
-      gsap.to([dot, ring], { opacity: 0, duration: 0.3 });
-    };
-
-    const onMouseEnterWindow = () => {
-      gsap.to([dot, ring], { opacity: 1, duration: 0.3 });
-    };
-
+    animate();
     window.addEventListener('mousemove', onMouseMove);
+
+    const onMouseDown = () => ring?.classList.add('is-clicking');
+    const onMouseUp = () => ring?.classList.remove('is-clicking');
     window.addEventListener('mousedown', onMouseDown);
     window.addEventListener('mouseup', onMouseUp);
-    document.addEventListener('mouseleave', onMouseLeaveWindow);
-    document.addEventListener('mouseenter', onMouseEnterWindow);
 
-    // Event selectors
-    const clickablesSelector = 'a, button, .clickable, .btn, .nav-item';
-    const dragablesSelector = '[data-cursor="drag"]';
+    const addHover = () => ring?.classList.add('is-hovering');
+    const removeHover = () => ring?.classList.remove('is-hovering');
 
-    const onMouseEnterClickable = () => {
-      gsap.to(ring, {
-        scale: 1.8,
-        backgroundColor: 'rgba(255, 255, 255, 0.08)',
-        borderColor: 'rgba(255, 255, 255, 0.9)',
-        duration: 0.25
-      });
-      gsap.to(dot, {
-        scale: 0.4,
-        backgroundColor: '#10b981',
-        duration: 0.25
+    const attachHoverListeners = () => {
+      document.querySelectorAll('a, button, [data-cursor="hover"], input, textarea, .btn').forEach(el => {
+        el.addEventListener('mouseenter', addHover);
+        el.addEventListener('mouseleave', removeHover);
       });
     };
 
-    const onMouseLeaveClickable = () => {
-      gsap.to(ring, {
-        scale: 1,
-        backgroundColor: 'transparent',
-        borderColor: 'rgba(255, 255, 255, 0.3)',
-        duration: 0.25
-      });
-      gsap.to(dot, {
-        scale: 1,
-        backgroundColor: '#6366f1',
-        duration: 0.25
-      });
-    };
-
-    const onMouseEnterDrag = () => {
-      setCursorText('DRAG');
-      gsap.to(ring, {
-        scale: 2.8,
-        backgroundColor: 'rgba(99, 102, 241, 0.1)',
-        borderColor: '#6366f1',
-        borderStyle: 'dashed',
-        duration: 0.3
-      });
-      gsap.to(dot, {
-        opacity: 0,
-        scale: 0.1,
-        duration: 0.2
-      });
-    };
-
-    const onMouseLeaveDrag = () => {
-      setCursorText('');
-      gsap.to(ring, {
-        scale: 1,
-        backgroundColor: 'transparent',
-        borderColor: 'rgba(255, 255, 255, 0.3)',
-        borderStyle: 'solid',
-        duration: 0.3
-      });
-      gsap.to(dot, {
-        opacity: 1,
-        scale: 1,
-        backgroundColor: '#6366f1',
-        duration: 0.2
-      });
-    };
-
-    // Helper to bind events dynamically
-    const attachCursorEvents = () => {
-      const clickables = document.querySelectorAll(clickablesSelector);
-      clickables.forEach((el) => {
-        el.addEventListener('mouseenter', onMouseEnterClickable);
-        el.addEventListener('mouseleave', onMouseLeaveClickable);
-      });
-
-      const dragables = document.querySelectorAll(dragablesSelector);
-      dragables.forEach((el) => {
-        el.addEventListener('mouseenter', onMouseEnterDrag);
-        el.addEventListener('mouseleave', onMouseLeaveDrag);
-      });
-    };
-
-    attachCursorEvents();
-
-    // Observe body mutations for new elements
-    const observer = new MutationObserver(attachCursorEvents);
+    const observer = new MutationObserver(attachHoverListeners);
     observer.observe(document.body, { childList: true, subtree: true });
+    attachHoverListeners();
 
     return () => {
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('mousedown', onMouseDown);
       window.removeEventListener('mouseup', onMouseUp);
-      document.removeEventListener('mouseleave', onMouseLeaveWindow);
-      document.removeEventListener('mouseenter', onMouseEnterWindow);
+      cancelAnimationFrame(rafRef.current);
       observer.disconnect();
-
-      const clickables = document.querySelectorAll(clickablesSelector);
-      clickables.forEach((el) => {
-        el.removeEventListener('mouseenter', onMouseEnterClickable);
-        el.removeEventListener('mouseleave', onMouseLeaveClickable);
-      });
-
-      const dragables = document.querySelectorAll(dragablesSelector);
-      dragables.forEach((el) => {
-        el.removeEventListener('mouseenter', onMouseEnterDrag);
-        el.removeEventListener('mouseleave', onMouseLeaveDrag);
-      });
     };
   }, []);
 
   return (
     <>
-      {/* Central Dot */}
-      <div
-        ref={dotRef}
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '8px',
-          height: '8px',
-          borderRadius: '50%',
-          backgroundColor: '#6366f1',
-          zIndex: 99999,
-          pointerEvents: 'none',
-          boxShadow: '0 0 10px rgba(99, 102, 241, 0.4)'
-        }}
-      />
-      {/* Outer Ring */}
-      <div
-        ref={ringRef}
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '32px',
-          height: '32px',
-          borderRadius: '50%',
-          border: '1px solid rgba(255, 255, 255, 0.3)',
-          backgroundColor: 'transparent',
-          zIndex: 99998,
-          pointerEvents: 'none',
-          willChange: 'transform',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        {/* Dynamic Inner Text (e.g. "DRAG") */}
-        {cursorText && (
-          <span
-            ref={textRef}
-            style={{
-              fontFamily: "'Outfit', sans-serif",
-              fontSize: '8px',
-              fontWeight: 700,
-              color: '#f8fafc',
-              letterSpacing: '0.15em'
-            }}
-          >
-            {cursorText}
-          </span>
-        )}
-      </div>
+      <div ref={dotRef} className="cursor-dot" aria-hidden="true" />
+      <div ref={ringRef} className="cursor-ring" aria-hidden="true" />
     </>
   );
 };

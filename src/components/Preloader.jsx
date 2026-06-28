@@ -1,247 +1,230 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const loadingTexts = [
-  "COLLECTING PORTFOLIO ASSETS",
-  "COMPILING INTERACTIVE LAYER",
-  "INITIALIZING THREE.JS NODES",
-  "TRANSITING NEON GLSL LAYER",
-  "READY FOR ORCHESTRATION"
+const LOADING_PHRASES = [
+  'INITIALIZING VOID',
+  'RENDERING MERIDIAN',
+  'LOADING EXPERIENCE',
+  'COMPOSING INTERFACE',
+  'CRAFTING MOMENTS',
 ];
 
 export const Preloader = ({ onComplete }) => {
   const [progress, setProgress] = useState(0);
-  const [textIndex, setTextIndex] = useState(0);
-  const [isVisible, setIsVisible] = useState(true);
+  const [phraseIndex, setPhraseIndex] = useState(0);
+  const [exiting, setExiting] = useState(false);
+  const [hidden, setHidden] = useState(false);
 
   useEffect(() => {
-    const duration = 2400; // ms
-    const intervalTime = 16;
-    const step = 100 / (duration / intervalTime);
+    const DURATION = 2600;
+    const INTERVAL = 16;
+    const STEP = 100 / (DURATION / INTERVAL);
 
     const progressTimer = setInterval(() => {
-      setProgress((prev) => {
-        const next = prev + step;
+      setProgress(prev => {
+        const next = Math.min(prev + STEP, 100);
         if (next >= 100) {
           clearInterval(progressTimer);
           setTimeout(() => {
-            setIsVisible(false);
-            if (onComplete) onComplete();
-          }, 600); // Wait at 100%
-          return 100;
+            setExiting(true);
+            setTimeout(() => {
+              setHidden(true);
+              onComplete?.();
+            }, 1000);
+          }, 400);
         }
         return next;
       });
-    }, intervalTime);
+    }, INTERVAL);
 
-    const textTimer = setInterval(() => {
-      setTextIndex((prev) => (prev + 1) % loadingTexts.length);
-    }, 450);
+    const phraseTimer = setInterval(() => {
+      setPhraseIndex(prev => (prev + 1) % LOADING_PHRASES.length);
+    }, 500);
 
     return () => {
       clearInterval(progressTimer);
-      clearInterval(textTimer);
+      clearInterval(phraseTimer);
     };
   }, [onComplete]);
 
-  // Screen split animations
-  const panelVariants = {
-    exitTop: {
-      y: '-100%',
-      transition: { duration: 0.9, ease: [0.85, 0, 0.15, 1], delay: 0.1 }
-    },
-    exitBottom: {
-      y: '100%',
-      transition: { duration: 0.9, ease: [0.85, 0, 0.15, 1], delay: 0.1 }
-    }
-  };
+  if (hidden) return null;
 
-  const textContainerVariants = {
-    exit: {
-      opacity: 0,
-      y: -50,
-      transition: { duration: 0.4, ease: "easeInOut" }
-    }
-  };
+  const displayProgress = Math.round(progress);
 
   return (
     <AnimatePresence>
-      {isVisible && (
+      {!exiting ? (
         <div
           style={{
             position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100vw',
-            height: '100vh',
-            zIndex: 99999,
+            inset: 0,
+            zIndex: 999999,
+            background: '#050508',
             display: 'flex',
             flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
             overflow: 'hidden',
-            pointerEvents: 'none'
           }}
         >
-          {/* Top Panel */}
-          <motion.div
-            variants={panelVariants}
-            exit="exitTop"
+          {/* Background subtle grid */}
+          <div
+            aria-hidden="true"
             style={{
               position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '50.5%',
-              backgroundColor: '#020204',
-              borderBottom: '1px solid rgba(255, 255, 255, 0.03)',
-              pointerEvents: 'auto'
+              inset: 0,
+              backgroundImage: `linear-gradient(rgba(232,255,107,0.02) 1px, transparent 1px),
+                                linear-gradient(90deg, rgba(232,255,107,0.02) 1px, transparent 1px)`,
+              backgroundSize: '60px 60px',
+              zIndex: 0,
             }}
           />
 
-          {/* Bottom Panel */}
-          <motion.div
-            variants={panelVariants}
-            exit="exitBottom"
+          {/* Main content */}
+          <div
             style={{
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              width: '100%',
-              height: '50.5%',
-              backgroundColor: '#020204',
-              borderTop: '1px solid rgba(255, 255, 255, 0.03)',
-              pointerEvents: 'auto'
-            }}
-          />
-
-          {/* Loading Content */}
-          <motion.div
-            variants={textContainerVariants}
-            exit="exit"
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
+              position: 'relative',
+              zIndex: 1,
+              textAlign: 'center',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              justifyContent: 'center',
-              zIndex: 100000,
-              pointerEvents: 'auto',
-              textAlign: 'center',
-              padding: '0 2rem'
+              gap: '2rem',
             }}
           >
-            {/* Ambient glowing orb behind percentage */}
-            <div
-              style={{
-                position: 'absolute',
-                width: '320px',
-                height: '320px',
-                borderRadius: '50%',
-                background: 'radial-gradient(circle, rgba(99,102,241,0.08) 0%, rgba(0,0,0,0) 70%)',
-                filter: 'blur(20px)',
-                pointerEvents: 'none'
-              }}
-            />
-
-            {/* Huge numeric counter */}
-            <div style={{ position: 'relative', marginBottom: '2.5rem' }}>
-              <span
+            {/* Huge progress number */}
+            <div style={{ position: 'relative' }}>
+              <motion.span
+                key={displayProgress}
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.15, ease: 'easeOut' }}
                 style={{
-                  fontFamily: "'Syne', sans-serif",
-                  fontSize: 'clamp(5rem, 12vw, 10rem)',
-                  fontWeight: 800,
-                  lineHeight: 1,
-                  background: 'linear-gradient(180deg, #ffffff 40%, rgba(255, 255, 255, 0.05) 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
                   display: 'block',
-                  letterSpacing: '-0.04em'
+                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontSize: 'clamp(6rem, 18vw, 14rem)',
+                  fontWeight: 700,
+                  lineHeight: 1,
+                  letterSpacing: '-0.06em',
+                  color: '#f0f0f5',
+                  userSelect: 'none',
                 }}
               >
-                {Math.round(progress)}
-              </span>
+                {displayProgress}
+              </motion.span>
               <span
                 style={{
                   position: 'absolute',
-                  top: '1rem',
+                  top: '0.5rem',
                   right: '-1.5rem',
-                  fontFamily: "'Outfit', sans-serif",
+                  fontFamily: "'DM Mono', monospace",
                   fontSize: '1.5rem',
-                  fontWeight: 500,
-                  color: '#10b981'
+                  fontWeight: 400,
+                  color: '#e8ff6b',
                 }}
               >
                 %
               </span>
             </div>
 
-            {/* Project Brand */}
-            <h1
+            {/* Name */}
+            <div
               style={{
-                fontFamily: "'Outfit', sans-serif",
-                fontSize: '0.85rem',
-                fontWeight: 600,
-                letterSpacing: '0.4em',
-                color: '#f8fafc',
+                fontFamily: "'DM Mono', monospace",
+                fontSize: '0.7rem',
+                fontWeight: 500,
+                letterSpacing: '0.35em',
+                color: 'rgba(240, 240, 245, 0.5)',
                 textTransform: 'uppercase',
-                marginBottom: '1rem',
-                opacity: 0.8
               }}
             >
               YASWANTH GOKAVARAPU
-            </h1>
+            </div>
 
-            {/* Dynamic cycling statuses */}
-            <div style={{ minHeight: '24px', overflow: 'hidden' }}>
+            {/* Cycling phrase */}
+            <div style={{ height: '20px', overflow: 'hidden' }}>
               <AnimatePresence mode="wait">
                 <motion.p
-                  key={textIndex}
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -15 }}
-                  transition={{ duration: 0.25, ease: "easeOut" }}
+                  key={phraseIndex}
+                  initial={{ y: 12, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: -12, opacity: 0 }}
+                  transition={{ duration: 0.2, ease: 'easeOut' }}
                   style={{
-                    fontFamily: "'Inter', sans-serif",
-                    fontSize: '0.75rem',
+                    fontFamily: "'DM Mono', monospace",
+                    fontSize: '0.65rem',
                     fontWeight: 400,
-                    letterSpacing: '0.2em',
-                    color: '#94a3b8',
-                    textTransform: 'uppercase'
+                    letterSpacing: '0.25em',
+                    color: '#3a3a4a',
+                    textTransform: 'uppercase',
                   }}
                 >
-                  {loadingTexts[textIndex]}
+                  {LOADING_PHRASES[phraseIndex]}
                 </motion.p>
               </AnimatePresence>
             </div>
 
-            {/* Mini Progress Bar Line */}
+            {/* Progress bar */}
             <div
               style={{
-                width: '180px',
+                width: '160px',
                 height: '1px',
-                backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                marginTop: '2rem',
-                position: 'relative'
+                background: 'rgba(255,255,255,0.06)',
+                position: 'relative',
+                borderRadius: '999px',
+                overflow: 'hidden',
               }}
             >
               <div
                 style={{
                   position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  height: '100%',
-                  background: 'linear-gradient(90deg, #6366f1, #10b981)',
+                  inset: '0 auto 0 0',
                   width: `${progress}%`,
-                  boxShadow: '0 0 10px rgba(99, 102, 241, 0.5)',
-                  transition: 'width 0.1s linear'
+                  background: 'linear-gradient(90deg, #7c6af7, #e8ff6b)',
+                  transition: 'width 0.1s linear',
+                  borderRadius: '999px',
+                  boxShadow: '0 0 8px rgba(232,255,107,0.4)',
                 }}
               />
             </div>
-          </motion.div>
+          </div>
         </div>
+      ) : (
+        <motion.div
+          key="exit"
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 999999,
+            display: 'flex',
+            pointerEvents: 'none',
+          }}
+        >
+          {/* Left panel */}
+          <motion.div
+            initial={{ x: 0 }}
+            animate={{ x: '-100%' }}
+            transition={{ duration: 0.9, ease: [0.85, 0, 0.15, 1] }}
+            style={{
+              width: '50%',
+              height: '100%',
+              background: '#050508',
+              transformOrigin: 'left',
+            }}
+          />
+          {/* Right panel */}
+          <motion.div
+            initial={{ x: 0 }}
+            animate={{ x: '100%' }}
+            transition={{ duration: 0.9, ease: [0.85, 0, 0.15, 1] }}
+            style={{
+              width: '50%',
+              height: '100%',
+              background: '#050508',
+              transformOrigin: 'right',
+            }}
+          />
+        </motion.div>
       )}
     </AnimatePresence>
   );

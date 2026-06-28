@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Lenis from 'lenis';
 import { Preloader } from './components/Preloader';
 import { CustomCursor } from './components/CustomCursor';
 import { WebGLBackground } from './components/WebGLBackground';
 import { Navbar } from './components/Navbar';
+import { ScrollProgress } from './components/ScrollProgress';
 import { Hero } from './sections/Hero';
 import { About } from './sections/About';
 import { Skills } from './sections/Skills';
@@ -17,25 +18,27 @@ import { Footer } from './sections/Footer';
 
 function App() {
   const [loading, setLoading] = useState(true);
+  const lenisRef = useRef(null);
 
   useEffect(() => {
-    // Initialize Lenis Smooth Scroll
     const lenis = new Lenis({
-      duration: 1.2,
+      duration: 1.4,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      wheelMultiplier: 1.0,
-      touchMultiplier: 1.5,
+      wheelMultiplier: 0.9,
+      touchMultiplier: 1.6,
+      infinite: false,
     });
 
+    lenisRef.current = lenis;
+
+    let animId;
     function raf(time) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      animId = requestAnimationFrame(raf);
     }
+    animId = requestAnimationFrame(raf);
 
-    requestAnimationFrame(raf);
-
-    // Stop scrolling when preloading
     if (loading) {
       lenis.stop();
       document.body.style.overflow = 'hidden';
@@ -45,6 +48,7 @@ function App() {
     }
 
     return () => {
+      cancelAnimationFrame(animId);
       lenis.destroy();
       document.body.style.overflow = '';
     };
@@ -52,14 +56,18 @@ function App() {
 
   return (
     <>
+      {/* Film-grain noise texture overlay */}
+      <div className="noise-overlay" aria-hidden="true" />
+
       <Preloader onComplete={() => setLoading(false)} />
-      
+
       {!loading && (
         <>
           <CustomCursor />
+          <ScrollProgress />
           <WebGLBackground />
           <Navbar />
-          
+
           <main style={{ position: 'relative', zIndex: 2 }}>
             <Hero />
             <About />
@@ -71,7 +79,7 @@ function App() {
             <Resume />
             <Contact />
           </main>
-          
+
           <Footer />
         </>
       )}

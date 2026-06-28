@@ -18,8 +18,8 @@ export const Resume = () => {
         const rect = card.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
-        card.style.setProperty('--mouse-x', `${x}px`);
-        card.style.setProperty('--mouse-y', `${y}px`);
+        card.style.setProperty('--x', `${x}px`);
+        card.style.setProperty('--y', `${y}px`);
       });
     };
 
@@ -43,23 +43,23 @@ export const Resume = () => {
     <section id="resume" className="section" style={{ position: 'relative' }}>
       <div className="container" style={{ position: 'relative', zIndex: 2 }}>
         <SectionHeader
-          index="05"
-          title="Interactive Resume"
-          subtitle="Explore academic credentials and request CV downloads or live interactive preview summaries."
+          index="07"
+          title="Curriculum Vitae"
+          subtitle="Explore academic achievements, technical proficiencies, and request official documents."
         />
 
         <div className="resume-grid">
-          {/* Left Column: Education Details */}
+          {/* Left Column: Education */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-10%" }}
+            viewport={{ once: true, margin: '-10%' }}
             transition={{ duration: 0.8 }}
             className="resume-column"
           >
             <div className="resume-section-title-row">
-              <GraduationCap size={20} color="#6366f1" />
-              <h3 className="resume-column-title">Education</h3>
+              <GraduationCap size={22} color="#7c6af7" />
+              <h3 className="resume-column-title">Academic Pathway</h3>
             </div>
 
             <div className="resume-list">
@@ -67,15 +67,32 @@ export const Resume = () => {
                 <div
                   key={edu.degree}
                   ref={(el) => (cardsRef.current[index] = el)}
-                  className="resume-item glass-card"
+                  className="resume-item surface-spotlight"
+                  style={{
+                    background: 'rgba(11, 12, 18, 0.4)',
+                    border: '1px solid rgba(255, 255, 255, 0.05)',
+                    borderRadius: 'var(--radius-lg)',
+                    padding: '2rem',
+                    position: 'relative',
+                    overflow: 'hidden',
+                  }}
                 >
+                  <div
+                    aria-hidden="true"
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      background: 'radial-gradient(400px circle at var(--x, -999px) var(--y, -999px), rgba(124, 106, 247, 0.04), transparent 50%)',
+                      pointerEvents: 'none',
+                    }}
+                  />
                   <div className="resume-item-header">
                     <h4 className="resume-item-degree">{edu.degree}</h4>
                     <span className="resume-item-duration">{edu.duration}</span>
                   </div>
                   <span className="resume-item-institution">{edu.institution}</span>
                   <div className="resume-item-grade-row">
-                    <span className="resume-item-grade-label">RESULT:</span>
+                    <span className="resume-item-grade-label">Result:</span>
                     <span className="resume-item-grade-val">{edu.grade}</span>
                   </div>
                 </div>
@@ -83,31 +100,64 @@ export const Resume = () => {
             </div>
           </motion.div>
 
-          {/* Right Column: Interactive Portal Actions */}
+          {/* Right Column: CV Preview Panel */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-10%" }}
+            viewport={{ once: true, margin: '-10%' }}
             transition={{ duration: 0.8, delay: 0.1 }}
             className="resume-column resume-download-col"
           >
             <div
               ref={(el) => (cardsRef.current[education.length] = el)}
-              className="glass-card download-card"
+              className="download-card surface-spotlight"
+              style={{
+                background: 'rgba(11, 12, 18, 0.4)',
+                border: '1px solid rgba(255, 255, 255, 0.05)',
+                borderRadius: 'var(--radius-lg)',
+                padding: '3rem 2.5rem',
+                position: 'relative',
+                overflow: 'hidden',
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                textAlign: 'center',
+                gap: '1.5rem',
+              }}
             >
+              <div
+                aria-hidden="true"
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'radial-gradient(500px circle at var(--x, -999px) var(--y, -999px), rgba(232, 255, 107, 0.04), transparent 50%)',
+                  pointerEvents: 'none',
+                }}
+              />
               <div className="download-icon-wrapper">
-                <FileText size={38} color="#10b981" />
+                <FileText size={38} color="#e8ff6b" />
               </div>
-              <h3 className="download-card-title">Full Curriculum Vitae</h3>
+              <h3 className="download-card-title">Curriculum Vitae</h3>
               <p className="download-card-desc">
                 Review technical milestones, full stack configurations, and structural engineering histories.
               </p>
-              
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', width: '100%', alignItems: 'center' }}>
+
+              {/* Animated Document Preview (CSS Layout representation) */}
+              <div className="cv-preview-lines" aria-hidden="true">
+                <div className="cv-line-h" style={{ width: '40%', background: 'var(--lime)' }} />
+                <div className="cv-line-h" style={{ width: '80%' }} />
+                <div className="cv-line-h" style={{ width: '90%' }} />
+                <div className="cv-line-h" style={{ width: '60%' }} />
+                <div className="cv-line-h" style={{ width: '70%', background: 'var(--violet)' }} />
+                <div className="cv-line-h" style={{ width: '50%' }} />
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%', alignItems: 'center' }}>
                 <MagneticButton range={25}>
                   <button
                     onClick={() => setModalOpen(true)}
-                    className="btn btn-primary download-btn"
+                    className="btn btn-lime download-btn"
                     style={{ width: '220px' }}
                   >
                     <Eye size={16} style={{ marginRight: '0.6rem' }} />
@@ -122,7 +172,7 @@ export const Resume = () => {
                       e.preventDefault();
                       alert("CV asset generation complete. Ready to link real PDF document.");
                     }}
-                    className="btn btn-secondary"
+                    className="btn btn-outline"
                     style={{ width: '220px' }}
                   >
                     <Download size={16} style={{ marginRight: '0.6rem' }} />
@@ -150,13 +200,26 @@ export const Resume = () => {
               animate={{ scale: 1, y: 0, opacity: 1 }}
               exit={{ scale: 0.9, y: 50, opacity: 0 }}
               transition={{ type: "spring", damping: 30, stiffness: 300 }}
-              className="cv-modal-container glass-card"
+              className="cv-modal-container"
+              style={{
+                background: '#0b0c12',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                borderRadius: 'var(--radius-lg)',
+                padding: '0',
+                overflow: 'hidden',
+                boxShadow: '0 30px 60px rgba(0, 0, 0, 0.8)',
+                width: '100%',
+                maxWidth: '680px',
+                height: '80vh',
+                display: 'flex',
+                flexDirection: 'column',
+              }}
               onClick={(e) => e.stopPropagation()}
             >
               {/* Header */}
               <div className="cv-modal-header">
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                  <BookOpen size={20} color="#6366f1" />
+                  <BookOpen size={20} color="#7c6af7" />
                   <h3 className="cv-modal-title">Yaswanth Gokavarapu CV</h3>
                 </div>
                 <button className="cv-modal-close" onClick={() => setModalOpen(false)} aria-label="Close CV preview">
@@ -239,7 +302,7 @@ export const Resume = () => {
         }
 
         .resume-column-title {
-          font-family: var(--font-title);
+          font-family: var(--font-display);
           font-size: 1.4rem;
           font-weight: 700;
           color: var(--text-primary);
@@ -251,22 +314,18 @@ export const Resume = () => {
           gap: 1.5rem;
         }
 
-        .resume-item {
-          padding: 2rem !important;
-          border-radius: var(--border-radius-md);
-          background: rgba(10, 10, 16, 0.35);
-        }
-
         .resume-item-header {
           display: flex;
           justify-content: space-between;
           align-items: flex-start;
           gap: 1rem;
           margin-bottom: 0.5rem;
+          position: relative;
+          z-index: 1;
         }
 
         .resume-item-degree {
-          font-family: var(--font-title);
+          font-family: var(--font-display);
           font-weight: 600;
           font-size: 1.15rem;
           color: var(--text-primary);
@@ -274,30 +333,35 @@ export const Resume = () => {
         }
 
         .resume-item-duration {
-          font-family: var(--font-title);
-          font-size: 0.8rem;
-          font-weight: 600;
-          color: var(--text-secondary);
+          font-family: var(--font-mono);
+          font-size: 0.75rem;
+          font-weight: 500;
+          color: var(--lime);
           padding: 0.25rem 0.65rem;
-          background: rgba(255, 255, 255, 0.02);
-          border: 1px solid rgba(255, 255, 255, 0.05);
-          border-radius: 12px;
+          background: var(--lime-dim);
+          border: 1px solid rgba(232, 255, 107, 0.2);
+          border-radius: var(--radius-sm);
           flex-shrink: 0;
         }
 
         .resume-item-institution {
+          font-family: var(--font-body);
           font-size: 0.95rem;
-          color: var(--accent-purple);
+          color: var(--violet);
           font-weight: 500;
           margin-bottom: 1.25rem;
           display: block;
+          position: relative;
+          z-index: 1;
         }
 
         .resume-item-grade-row {
-          font-family: var(--font-body);
-          font-size: 0.8rem;
+          font-family: var(--font-mono);
+          font-size: 0.75rem;
           display: flex;
           gap: 0.5rem;
+          position: relative;
+          z-index: 1;
         }
 
         .resume-item-grade-label {
@@ -316,36 +380,25 @@ export const Resume = () => {
           justify-content: center;
         }
 
-        .download-card {
-          width: 100%;
-          max-width: 460px;
-          text-align: center;
-          padding: 3rem 2rem !important;
-          border-radius: var(--border-radius-lg);
-          background: rgba(10, 10, 16, 0.35);
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 1.5rem;
-        }
-
         .download-icon-wrapper {
           width: 72px;
           height: 72px;
           border-radius: 50%;
-          background: rgba(16, 185, 129, 0.04);
-          border: 1px solid rgba(16, 185, 129, 0.12);
+          background: var(--lime-dim);
+          border: 1px solid rgba(232, 255, 107, 0.2);
           display: flex;
           align-items: center;
           justify-content: center;
-          box-shadow: 0 0 20px rgba(16, 185, 129, 0.08);
+          box-shadow: 0 0 20px rgba(232, 255, 107, 0.08);
+          z-index: 1;
         }
 
         .download-card-title {
-          font-family: var(--font-title);
+          font-family: var(--font-display);
           font-weight: 700;
           font-size: 1.35rem;
           color: var(--text-primary);
+          z-index: 1;
         }
 
         .download-card-desc {
@@ -353,7 +406,27 @@ export const Resume = () => {
           font-size: 0.92rem;
           color: var(--text-secondary);
           line-height: 1.6;
-          font-weight: 300;
+          font-weight: 400;
+          z-index: 1;
+        }
+
+        .cv-preview-lines {
+          display: flex;
+          flex-direction: column;
+          gap: 0.6rem;
+          width: 100%;
+          max-width: 240px;
+          padding: 1.25rem;
+          background: rgba(255, 255, 255, 0.02);
+          border: 1px solid rgba(255, 255, 255, 0.04);
+          border-radius: var(--radius-md);
+          z-index: 1;
+        }
+
+        .cv-line-h {
+          height: 4px;
+          background: rgba(255, 255, 255, 0.08);
+          border-radius: 2px;
         }
 
         /* Modal styling */
@@ -363,25 +436,13 @@ export const Resume = () => {
           left: 0;
           width: 100vw;
           height: 100vh;
-          background: rgba(3, 3, 6, 0.7);
+          background: rgba(5, 5, 8, 0.8);
           backdrop-filter: blur(12px);
           z-index: 10000;
           display: flex;
           align-items: center;
           justify-content: center;
           padding: 2rem;
-        }
-
-        .cv-modal-container {
-          width: 100%;
-          max-width: 680px;
-          height: 80vh;
-          display: flex;
-          flex-direction: column;
-          background: #06060c !important;
-          border: 1px solid rgba(255, 255, 255, 0.08) !important;
-          padding: 0 !important;
-          box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8) !important;
         }
 
         .cv-modal-header {
@@ -393,7 +454,7 @@ export const Resume = () => {
         }
 
         .cv-modal-title {
-          font-family: var(--font-title);
+          font-family: var(--font-display);
           font-size: 1.1rem;
           font-weight: 600;
           color: var(--text-primary);
@@ -409,7 +470,7 @@ export const Resume = () => {
         }
 
         .cv-modal-close:hover {
-          color: #ef4444;
+          color: var(--ember);
         }
 
         .cv-modal-body {
@@ -428,7 +489,7 @@ export const Resume = () => {
         }
 
         .cv-doc-header h2 {
-          font-family: var(--font-title);
+          font-family: var(--font-display);
           font-size: 1.8rem;
           color: var(--text-primary);
           margin-bottom: 0.5rem;
@@ -436,6 +497,7 @@ export const Resume = () => {
 
         .cv-doc-header p {
           font-size: 0.85rem;
+          color: var(--text-secondary);
         }
 
         .cv-doc-section {
@@ -445,12 +507,12 @@ export const Resume = () => {
         }
 
         .cv-sec-title {
-          font-family: var(--font-title);
+          font-family: var(--font-display);
           font-size: 0.9rem;
           font-weight: 700;
           text-transform: uppercase;
           letter-spacing: 0.1em;
-          color: var(--accent-purple);
+          color: var(--violet);
           margin-bottom: 0.8rem;
         }
 
@@ -474,7 +536,7 @@ export const Resume = () => {
 
         .cv-milestone em {
           font-size: 0.85rem;
-          color: var(--accent-mint);
+          color: var(--lime);
           display: block;
           margin-bottom: 0.4rem;
         }
