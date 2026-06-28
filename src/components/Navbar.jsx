@@ -3,14 +3,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 
 const NAV_LINKS = [
-  { href: '#hero', label: 'Home' },
-  { href: '#about', label: 'About' },
-  { href: '#skills', label: 'Skills' },
-  { href: '#projects', label: 'Projects' },
+  { href: '#hero',       label: 'Home' },
+  { href: '#about',      label: 'About' },
+  { href: '#skills',     label: 'Skills' },
+  { href: '#projects',   label: 'Projects' },
   { href: '#experience', label: 'Experience' },
-  { href: '#github', label: 'GitHub' },
-  { href: '#education', label: 'Education' },
-  { href: '#contact', label: 'Contact' },
+  { href: '#github',     label: 'GitHub' },
+  { href: '#education',  label: 'Education' },
+  { href: '#contact',    label: 'Contact', isCta: true },
 ];
 
 export const Navbar = () => {
@@ -25,8 +25,8 @@ export const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    const sectionIds = NAV_LINKS.map(l => l.href.replace('#', ''));
-    const observers = sectionIds.map(id => {
+    const allIds = NAV_LINKS.map(l => l.href.replace('#', ''));
+    const observers = allIds.map(id => {
       const el = document.getElementById(id);
       if (!el) return null;
       const obs = new IntersectionObserver(
@@ -57,11 +57,12 @@ export const Navbar = () => {
           left: 0,
           right: 0,
           zIndex: 1000,
-          padding: scrolled ? '1rem 0' : '1.5rem 0',
-          background: scrolled ? 'rgba(10, 11, 16, 0.92)' : 'transparent',
-          borderBottom: scrolled ? '1px solid var(--border)' : '1px solid transparent',
-          backdropFilter: scrolled ? 'blur(12px)' : 'none',
-          WebkitBackdropFilter: scrolled ? 'blur(12px)' : 'none',
+          padding: scrolled ? '0.85rem 0' : '1.25rem 0',
+          background: scrolled ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.85)',
+          borderBottom: scrolled ? '1px solid #E5E7EB' : '1px solid transparent',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          boxShadow: scrolled ? '0 2px 20px rgba(0,0,0,0.07)' : 'none',
           transition: 'all 0.3s ease',
         }}
       >
@@ -71,21 +72,22 @@ export const Navbar = () => {
             href="#hero"
             onClick={(e) => handleClick(e, '#hero')}
             style={{
-              fontFamily: "var(--font-display)",
-              fontWeight: 700,
-              fontSize: '1.2rem',
-              color: 'var(--text-primary)',
+              fontFamily: 'var(--font-display)',
+              fontWeight: 800,
+              fontSize: '1.25rem',
+              color: '#111827',
               letterSpacing: '-0.03em',
             }}
           >
-            Yaswanth<span style={{ color: 'var(--accent-lime)' }}>.G</span>
+            Yaswanth<span style={{ color: '#DC2626' }}>.G</span>
           </a>
 
-          {/* Desktop Links */}
+          {/* Desktop Nav */}
           <nav aria-label="Main Navigation" style={{ display: 'flex', alignItems: 'center', gap: '2rem' }} className="desktop-nav-only">
             <ul style={{ display: 'flex', gap: '1.75rem', listStyle: 'none', alignItems: 'center' }}>
-              {NAV_LINKS.map(link => {
-                const isActive = activeSection === link.href.replace('#', '');
+              {NAV_LINKS.filter(l => !l.isCta).map(link => {
+                const id = link.href.replace('#', '');
+                const isActive = activeSection === id;
                 return (
                   <li key={link.href}>
                     <a
@@ -93,11 +95,12 @@ export const Navbar = () => {
                       onClick={(e) => handleClick(e, link.href)}
                       style={{
                         fontFamily: 'var(--font-display)',
-                        fontSize: '0.85rem',
-                        fontWeight: 500,
-                        color: isActive ? 'var(--text-primary)' : 'var(--text-secondary)',
+                        fontSize: '0.875rem',
+                        fontWeight: isActive ? 600 : 500,
+                        color: isActive ? '#DC2626' : '#374151',
                         position: 'relative',
                         padding: '0.25rem 0',
+                        transition: 'color 0.2s ease',
                       }}
                     >
                       {link.label}
@@ -110,7 +113,8 @@ export const Navbar = () => {
                             right: 0,
                             bottom: -4,
                             height: '2px',
-                            background: 'var(--accent-lime)',
+                            background: '#DC2626',
+                            borderRadius: '2px',
                           }}
                         />
                       )}
@@ -120,14 +124,28 @@ export const Navbar = () => {
               })}
             </ul>
 
-            <a
-              href="#contact"
-              onClick={(e) => handleClick(e, '#contact')}
-              className="btn btn-lime"
-              style={{ padding: '0.5rem 1rem', fontSize: '0.8rem' }}
-            >
-              Contact
-            </a>
+            {/* Contact CTA — single, active-highlighted */}
+            {NAV_LINKS.filter(l => l.isCta).map(link => {
+              const id = link.href.replace('#', '');
+              const isActive = activeSection === id;
+              return (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={(e) => handleClick(e, link.href)}
+                  className="btn btn-primary"
+                  style={{
+                    padding: '0.5rem 1.25rem',
+                    fontSize: '0.85rem',
+                    borderRadius: '8px',
+                    outline: isActive ? '2px solid #B91C1C' : 'none',
+                    outlineOffset: '2px',
+                  }}
+                >
+                  {link.label}
+                </a>
+              );
+            })}
           </nav>
 
           {/* Mobile Toggle */}
@@ -137,11 +155,11 @@ export const Navbar = () => {
             aria-label="Toggle Navigation"
             style={{
               display: 'none',
-              background: 'rgba(255, 255, 255, 0.04)',
-              border: '1px solid var(--border)',
-              color: 'var(--text-primary)',
-              width: '36px',
-              height: '36px',
+              background: '#F3F4F6',
+              border: '1px solid #E5E7EB',
+              color: '#111827',
+              width: '38px',
+              height: '38px',
               borderRadius: '8px',
               alignItems: 'center',
               justifyContent: 'center',
@@ -159,24 +177,26 @@ export const Navbar = () => {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.25 }}
+            transition={{ duration: 0.22 }}
             style={{
               position: 'fixed',
               top: '60px',
               left: 0,
               right: 0,
               bottom: 0,
-              background: 'rgba(10, 11, 16, 0.98)',
-              backdropFilter: 'blur(12px)',
+              background: 'rgba(255, 255, 255, 0.98)',
+              backdropFilter: 'blur(16px)',
               zIndex: 999,
               display: 'flex',
               flexDirection: 'column',
               padding: '2rem 1.5rem',
+              borderTop: '1px solid #E5E7EB',
             }}
           >
-            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
               {NAV_LINKS.map((link) => {
-                const isActive = activeSection === link.href.replace('#', '');
+                const id = link.href.replace('#', '');
+                const isActive = activeSection === id;
                 return (
                   <li key={link.href}>
                     <a
@@ -184,9 +204,10 @@ export const Navbar = () => {
                       onClick={(e) => handleClick(e, link.href)}
                       style={{
                         fontFamily: 'var(--font-display)',
-                        fontSize: '1.25rem',
+                        fontSize: '1.2rem',
                         fontWeight: 600,
-                        color: isActive ? 'var(--accent-lime)' : 'var(--text-primary)',
+                        color: isActive ? '#DC2626' : '#111827',
+                        transition: 'color 0.2s ease',
                       }}
                     >
                       {link.label}

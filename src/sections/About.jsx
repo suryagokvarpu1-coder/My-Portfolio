@@ -56,7 +56,7 @@ export const About = () => {
                       fontFamily: 'var(--font-display)',
                       fontSize: '1.75rem',
                       fontWeight: 700,
-                      color: 'var(--accent-lime)',
+                      color: 'var(--accent)',
                       lineHeight: 1.1,
                       marginBottom: '0.25rem',
                     }}

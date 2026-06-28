@@ -68,10 +68,10 @@ export const Experience = () => {
           width: 12px;
           height: 12px;
           border-radius: 50%;
-          background: var(--accent-lime);
+          background: var(--accent);
           border: 3px solid var(--bg);
           z-index: 2;
-          box-shadow: 0 0 10px rgba(232, 255, 107, 0.4);
+          box-shadow: 0 0 10px rgba(220, 38, 38, 0.3);
         }
 
         .timeline-line {
@@ -100,7 +100,7 @@ export const Experience = () => {
           display: inline-block;
           font-family: var(--font-mono);
           font-size: 0.72rem;
-          color: var(--accent-lime);
+          color: var(--accent);
           text-transform: uppercase;
           letter-spacing: 0.1em;
           margin-bottom: 0.5rem;

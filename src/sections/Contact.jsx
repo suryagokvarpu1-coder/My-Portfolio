@@ -112,7 +112,7 @@ export const Contact = () => {
 
             <div className="contact-details-list">
               <div className="contact-item">
-                <Mail size={18} color="var(--accent-lime)" />
+                <Mail size={18} color="var(--accent)" />
                 <div>
                   <span className="contact-lbl">Email</span>
                   <a href={`mailto:${email}`} className="contact-val">{email}</a>
@@ -120,7 +120,7 @@ export const Contact = () => {
               </div>
 
               <div className="contact-item">
-                <MapPin size={18} color="var(--accent-lime)" />
+                <MapPin size={18} color="var(--accent)" />
                 <div>
                   <span className="contact-lbl">Location</span>
                   <span className="contact-val">{location}</span>
@@ -285,7 +285,7 @@ export const Contact = () => {
         }
 
         .contact-val:hover {
-          color: var(--accent-lime);
+          color: var(--accent);
         }
 
         .contact-social-link {
@@ -294,7 +294,7 @@ export const Contact = () => {
         }
 
         .contact-social-link:hover {
-          color: var(--accent-lime);
+          color: var(--accent);
         }
 
         @media (min-width: 860px) {

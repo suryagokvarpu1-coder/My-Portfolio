@@ -73,7 +73,7 @@ export const Hero = () => {
         style={{
           position: 'absolute',
           inset: 0,
-          background: 'radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.03) 0%, transparent 60%), radial-gradient(circle at 90% 80%, rgba(232, 255, 107, 0.03) 0%, transparent 60%)',
+          background: 'radial-gradient(circle at 10% 20%, rgba(220, 38, 38, 0.04) 0%, transparent 60%), radial-gradient(circle at 90% 80%, rgba(239, 68, 68, 0.03) 0%, transparent 60%)',
           pointerEvents: 'none',
           zIndex: 0,
         }}
@@ -93,7 +93,7 @@ export const Hero = () => {
               style={{
                 fontFamily: "var(--font-mono)",
                 fontSize: '0.8rem',
-                color: 'var(--accent-lime)',
+                color: 'var(--accent)',
                 letterSpacing: '0.15em',
                 textTransform: 'uppercase',
                 display: 'block',
@@ -274,16 +274,15 @@ export const Hero = () => {
         }
 
         .hero-social-link {
-          color: var(--text-secondary);
-          transition: color 0.2s ease;
+          color: var(--accent);
         }
 
         .hero-social-link:hover {
-          color: var(--accent-lime);
+          color: var(--accent);
         }
 
         .typewriter-cursor {
-          color: var(--accent-lime);
+          color: var(--accent);
           margin-left: 2px;
           animation: blink 0.8s infinite;
         }

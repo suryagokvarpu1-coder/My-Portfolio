@@ -29,12 +29,12 @@ export const Resume = () => {
                 className={`education-card ${isLatest ? 'is-latest' : ''}`}
                 style={{
                   background: 'var(--bg-card)',
-                  border: isLatest ? '1px solid rgba(232, 255, 107, 0.3)' : '1px solid var(--border)',
+                  border: isLatest ? '1px solid rgba(220, 38, 38, 0.2)' : '1px solid var(--border)',
                   borderRadius: 'var(--radius-lg)',
                   padding: '2.5rem 2rem',
                   position: 'relative',
                   overflow: 'hidden',
-                  boxShadow: isLatest ? '0 10px 30px rgba(232, 255, 107, 0.02)' : 'none',
+                  boxShadow: isLatest ? '0 10px 30px rgba(220, 38, 38, 0.06)' : 'none',
                   transition: 'border-color 0.2s ease',
                 }}
               >
@@ -47,7 +47,7 @@ export const Resume = () => {
                       left: 0,
                       right: 0,
                       height: '3px',
-                      background: 'var(--accent-lime)',
+                      background: 'var(--accent)',
                     }}
                   />
                 )}
@@ -58,8 +58,8 @@ export const Resume = () => {
                     width: '44px',
                     height: '44px',
                     borderRadius: '10px',
-                    background: isLatest ? 'rgba(232, 255, 107, 0.06)' : 'rgba(255, 255, 255, 0.02)',
-                    border: `1px solid ${isLatest ? 'rgba(232, 255, 107, 0.2)' : 'var(--border)'}`,
+                    background: isLatest ? 'rgba(220, 38, 38, 0.06)' : 'var(--bg-subtle)',
+                    border: `1px solid ${isLatest ? 'rgba(220, 38, 38, 0.2)' : 'var(--border)'}`,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -67,11 +67,11 @@ export const Resume = () => {
                   }}
                 >
                   {idx === 0 ? (
-                    <GraduationCap size={20} color="var(--accent-lime)" />
+                    <GraduationCap size={20} color="var(--accent)" />
                   ) : idx === 1 ? (
-                    <Award size={20} color="var(--accent-violet)" />
+                    <Award size={20} color="var(--accent-sec)" />
                   ) : (
-                    <BookOpen size={20} color="var(--accent-cyan)" />
+                    <BookOpen size={20} color="var(--accent)" />
                   )}
                 </div>
 
@@ -132,8 +132,8 @@ export const Resume = () => {
           align-items: center;
           gap: 0.5rem;
           padding: 0.35rem 0.75rem;
-          background: rgba(255, 255, 255, 0.02);
-          border: 1px solid var(--border);
+          background: var(--accent-light);
+          border: 1px solid rgba(220, 38, 38, 0.15);
           border-radius: 8px;
         }
 

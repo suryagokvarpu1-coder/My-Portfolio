@@ -4,8 +4,8 @@ import { Award, CheckCircle } from 'lucide-react';
 import { SectionHeader } from '../components/SectionHeader';
 import { portfolioData } from '../data/portfolioData';
 
-const ACCENT_COLORS = ['#e8ff6b', '#7c6af7', '#4cc9f0'];
-const ISSUER_COLORS = { 'Amazon Web Services': '#ff9900', 'Google Cloud': '#4285f4', 'Meta (Coursera)': '#0866ff' };
+const ACCENT_COLORS = ['#DC2626', '#EF4444', '#B91C1C'];
+const ISSUER_COLORS = { 'Amazon Web Services': '#FF9900', 'Google Cloud': '#4285F4', 'Meta (Coursera)': '#0866FF' };
 
 export const Certifications = () => {
   const certifications = portfolioData.certifications;
@@ -58,50 +58,49 @@ export const Certifications = () => {
                 }}
                 className="cert-card"
                 style={{
-                  background: 'rgba(11,12,18,0.5)',
-                  border: '1px solid rgba(255,255,255,0.06)',
+                  background: 'var(--bg-card)',
+                  border: '1px solid var(--border)',
                   borderRadius: '20px',
                   padding: '2rem',
                   position: 'relative',
                   overflow: 'hidden',
-                  backdropFilter: 'blur(12px)',
-                  transition: 'border-color 0.3s ease, transform 0.4s ease',
+                  transition: 'border-color 0.3s ease, transform 0.4s ease, box-shadow 0.3s ease',
                 }}
                 whileHover={{ y: -5, transition: { duration: 0.3 } }}
               >
-                {/* Spotlight */}
+                {/* Spotlight hover effect */}
                 <div
                   aria-hidden="true"
                   style={{
                     position: 'absolute',
                     inset: 0,
-                    background: `radial-gradient(400px circle at var(--x, -999px) var(--y, -999px), ${accent}05, transparent 50%)`,
+                    background: `radial-gradient(350px circle at var(--x, -999px) var(--y, -999px), rgba(220,38,38,0.05), transparent 50%)`,
                     pointerEvents: 'none',
                   }}
                 />
 
-                {/* Top border accent */}
+                {/* Top border accent stripe */}
                 <div
                   style={{
                     position: 'absolute',
                     top: 0,
                     left: 0,
                     right: 0,
-                    height: '2px',
-                    background: `linear-gradient(90deg, ${accent}60, transparent)`,
+                    height: '3px',
+                    background: `linear-gradient(90deg, ${accent}, transparent)`,
                     borderRadius: '20px 20px 0 0',
                   }}
                 />
 
                 <div style={{ position: 'relative', zIndex: 1 }}>
-                  {/* Badge */}
+                  {/* Badge icon */}
                   <div
                     style={{
                       width: '44px',
                       height: '44px',
                       borderRadius: '12px',
-                      background: `${accent}10`,
-                      border: `1px solid ${accent}25`,
+                      background: 'var(--accent-light)',
+                      border: '1px solid rgba(220, 38, 38, 0.15)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -113,10 +112,10 @@ export const Certifications = () => {
 
                   <h3
                     style={{
-                      fontFamily: "'Space Grotesk', sans-serif",
+                      fontFamily: 'var(--font-display)',
                       fontSize: '1.1rem',
                       fontWeight: 600,
-                      color: '#f0f0f5',
+                      color: 'var(--text-primary)',
                       letterSpacing: '-0.02em',
                       lineHeight: 1.3,
                       marginBottom: '0.75rem',
@@ -135,7 +134,7 @@ export const Certifications = () => {
                   >
                     <span
                       style={{
-                        fontFamily: "'DM Sans', sans-serif",
+                        fontFamily: 'var(--font-body)',
                         fontSize: '0.82rem',
                         fontWeight: 600,
                         color: issuerColor,
@@ -143,12 +142,12 @@ export const Certifications = () => {
                     >
                       {cert.issuer}
                     </span>
-                    <span style={{ color: '#3a3a4a', fontSize: '0.7rem' }}>·</span>
+                    <span style={{ color: 'var(--border)', fontSize: '0.7rem' }}>·</span>
                     <span
                       style={{
-                        fontFamily: "'DM Mono', monospace",
+                        fontFamily: 'var(--font-mono)',
                         fontSize: '0.7rem',
-                        color: '#7a7a8c',
+                        color: 'var(--text-muted)',
                       }}
                     >
                       {cert.date}
@@ -161,19 +160,19 @@ export const Certifications = () => {
                         display: 'flex',
                         alignItems: 'center',
                         gap: '0.4rem',
-                        padding: '0.3rem 0.6rem',
-                        background: 'rgba(255,255,255,0.02)',
-                        border: '1px solid rgba(255,255,255,0.05)',
+                        padding: '0.3rem 0.65rem',
+                        background: 'var(--bg-subtle)',
+                        border: '1px solid var(--border)',
                         borderRadius: '8px',
                         width: 'fit-content',
                       }}
                     >
-                      <CheckCircle size={11} color="#22c55e" />
+                      <CheckCircle size={11} color="#22C55E" />
                       <span
                         style={{
-                          fontFamily: "'DM Mono', monospace",
+                          fontFamily: 'var(--font-mono)',
                           fontSize: '0.62rem',
-                          color: '#3a3a4a',
+                          color: 'var(--text-muted)',
                           letterSpacing: '0.04em',
                         }}
                       >
@@ -204,7 +203,8 @@ export const Certifications = () => {
         }
 
         .cert-card:hover {
-          border-color: rgba(255,255,255,0.12) !important;
+          border-color: rgba(220, 38, 38, 0.3) !important;
+          box-shadow: var(--shadow-red);
         }
       `}</style>
     </section>

@@ -92,13 +92,13 @@ export const Footer = () => {
         }
 
         .footer-social-ico:hover {
-          color: var(--accent-lime);
+          color: var(--accent);
         }
 
         .footer-top-btn:hover {
-          border-color: var(--accent-lime);
-          color: var(--accent-lime);
-          background: rgba(232, 255, 107, 0.05);
+          border-color: var(--accent);
+          color: var(--accent);
+          background: var(--accent-light);
         }
       `}</style>
     </footer>

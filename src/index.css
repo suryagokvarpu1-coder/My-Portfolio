@@ -1,40 +1,56 @@
 /* ==========================================================================
-   MINIMALIST PREMIUM PORTFOLIO — Design Tokens & Base Styles
+   PREMIUM WHITE + RED PORTFOLIO — Design Tokens & Base Styles
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
-
 :root {
-  /* Recruiter-Friendly Dark Neutral Palette */
-  --bg:           #0a0b10;
-  --bg-card:      #12131a;
-  --bg-input:     #171922;
-  --border:       rgba(255, 255, 255, 0.08);
-  --border-hover: rgba(255, 255, 255, 0.16);
-  
-  /* Text */
-  --text-primary:   #f3f4f6;
-  --text-secondary: #9ca3af;
-  --text-muted:     #6b7280;
-  --text-inverse:   #0a0b10;
+  /* Core Palette */
+  --accent:         #DC2626;
+  --accent-hover:   #B91C1C;
+  --accent-light:   #FEE2E2;
+  --accent-sec:     #EF4444;
 
-  /* Accent highlights (Soft & Subtle gradients) */
-  --accent-lime:    #e8ff6b;
-  --accent-violet:  #8b5cf6;
-  --accent-cyan:    #06b6d4;
+  /* Backgrounds */
+  --bg:             #FFFFFF;
+  --bg-card:        #F8FAFC;
+  --bg-card-hover:  #F1F5F9;
+  --bg-input:       #FFFFFF;
+  --bg-subtle:      #F9FAFB;
+
+  /* Text */
+  --text-primary:   #111827;
+  --text-secondary: #6B7280;
+  --text-muted:     #9CA3AF;
+  --text-inverse:   #FFFFFF;
+
+  /* Borders */
+  --border:         #E5E7EB;
+  --border-hover:   #DC2626;
+  --border-focus:   #DC2626;
+
+  /* Shadows */
+  --shadow-sm:      0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+  --shadow-md:      0 4px 16px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.05);
+  --shadow-lg:      0 10px 40px rgba(0,0,0,0.1), 0 4px 12px rgba(0,0,0,0.06);
+  --shadow-red:     0 4px 20px rgba(220,38,38,0.18);
 
   /* Typography */
-  --font-display:   'Space Grotesk', sans-serif;
+  --font-display:   'Poppins', sans-serif;
   --font-body:      'Inter', sans-serif;
   --font-mono:      'Fira Code', monospace;
 
-  /* Structural Details */
+  /* Radii */
   --radius-sm:      6px;
   --radius-md:      12px;
   --radius-lg:      18px;
+  --radius-xl:      24px;
   --radius-full:    9999px;
-  
+
+  /* Layout */
   --space-container: 1200px;
+
+  /* Transitions */
+  --dur-base:       0.2s;
+  --ease-out:       cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* ==========================================================================
@@ -45,6 +61,7 @@
   margin: 0;
   padding: 0;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 html {
@@ -62,41 +79,34 @@ body {
 }
 
 /* Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  background: var(--bg);
-}
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-full);
-}
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-subtle); }
+::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: var(--radius-full); }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
 ::selection {
-  background: rgba(232, 255, 107, 0.15);
-  color: var(--text-primary);
+  background: var(--accent-light);
+  color: var(--accent);
 }
 
-/* Typography Scale */
+/* Typography */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-primary);
   letter-spacing: -0.02em;
+  line-height: 1.2;
 }
 
 p {
   color: var(--text-secondary);
+  line-height: 1.7;
 }
 
 a {
   color: inherit;
   text-decoration: none;
-  transition: color 0.2s ease, opacity 0.2s ease;
+  transition: color var(--dur-base) ease, opacity var(--dur-base) ease;
 }
 
 button {
@@ -106,7 +116,6 @@ button {
   cursor: pointer;
 }
 
-/* Custom reset cursor */
 body, a, button, input, textarea {
   cursor: auto !important;
 }
@@ -127,53 +136,64 @@ body, a, button, input, textarea {
 }
 
 @media (max-width: 640px) {
-  .section {
-    padding: 4rem 0;
-  }
+  .section { padding: 4rem 0; }
 }
 
 /* ==========================================================================
-   COMPONENTS
+   BUTTONS
    ========================================================================== */
-
-/* Buttons */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  font-weight: 500;
+  padding: 0.75rem 1.75rem;
+  font-family: var(--font-display);
+  font-weight: 600;
   font-size: 0.9rem;
   border-radius: var(--radius-md);
   transition: all 0.2s ease;
   white-space: nowrap;
+  letter-spacing: 0.01em;
 }
 
-.btn-lime {
-  background: var(--accent-lime);
+/* Primary — Red background */
+.btn-primary {
+  background: var(--accent);
   color: var(--text-inverse);
-  box-shadow: 0 4px 12px rgba(232, 255, 107, 0.15);
+  box-shadow: var(--shadow-red);
+  border: 2px solid transparent;
 }
-
-.btn-lime:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(232, 255, 107, 0.25);
+.btn-primary:hover {
+  background: var(--accent-hover);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 6px 24px rgba(220,38,38,0.28);
 }
+.btn-primary:active { transform: translateY(0) scale(0.99); }
 
-.btn-outline {
-  border: 1px solid var(--border);
-  color: var(--text-primary);
+/* Secondary — Red outline */
+.btn-secondary {
   background: transparent;
+  color: var(--accent);
+  border: 2px solid var(--accent);
+}
+.btn-secondary:hover {
+  background: var(--accent);
+  color: var(--text-inverse);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: var(--shadow-red);
 }
 
-.btn-outline:hover {
-  border-color: var(--text-primary);
-  background: rgba(255, 255, 255, 0.02);
-  transform: translateY(-1px);
-}
+/* Legacy aliases so existing JSX still works */
+.btn-lime { background: var(--accent); color: var(--text-inverse); box-shadow: var(--shadow-red); border: 2px solid transparent; }
+.btn-lime:hover { background: var(--accent-hover); transform: translateY(-2px) scale(1.02); box-shadow: 0 6px 24px rgba(220,38,38,0.28); }
 
-/* Tech Chips */
+.btn-outline { background: transparent; color: var(--accent); border: 2px solid var(--accent); }
+.btn-outline:hover { background: var(--accent); color: var(--text-inverse); transform: translateY(-2px) scale(1.02); box-shadow: var(--shadow-red); }
+
+/* ==========================================================================
+   TECH CHIPS / TAGS
+   ========================================================================== */
 .tag {
   display: inline-flex;
   font-family: var(--font-mono);
@@ -181,62 +201,68 @@ body, a, button, input, textarea {
   padding: 0.25rem 0.65rem;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--bg-subtle);
   color: var(--text-secondary);
 }
 
-/* Scroll progress indicator */
+/* ==========================================================================
+   SCROLL PROGRESS
+   ========================================================================== */
 .scroll-progress-bar {
   position: fixed;
   top: 0;
   left: 0;
   height: 3px;
-  background: var(--accent-lime);
+  background: linear-gradient(90deg, var(--accent), var(--accent-sec));
   z-index: 10000;
-  box-shadow: 0 1px 8px rgba(232, 255, 107, 0.3);
+  box-shadow: 0 1px 8px rgba(220,38,38,0.3);
 }
 
-/* Form Styling */
-.form-field {
-  margin-bottom: 1.5rem;
-}
+/* ==========================================================================
+   FORM ELEMENTS
+   ========================================================================== */
+.form-field { margin-bottom: 1.5rem; }
 
 .form-input-base,
 .form-textarea-base {
   width: 100%;
   background: var(--bg-input);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   border-radius: var(--radius-md);
   padding: 0.85rem 1rem;
   font-family: var(--font-body);
   font-size: 0.92rem;
   color: var(--text-primary);
   outline: none;
-  transition: border-color 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: var(--shadow-sm);
 }
-
 .form-input-base:focus,
 .form-textarea-base:focus {
-  border-color: var(--accent-lime);
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(220,38,38,0.1);
 }
+.form-textarea-base { min-height: 130px; resize: vertical; }
 
 .form-label-float {
   display: block;
   font-family: var(--font-display);
   font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--text-secondary);
+  font-weight: 600;
+  color: var(--text-primary);
   margin-bottom: 0.5rem;
 }
 
 .form-error-text {
   font-size: 0.75rem;
-  color: #ef4444;
+  color: var(--accent);
   margin-top: 0.25rem;
   display: block;
 }
 
-/* Alerts */
+/* ==========================================================================
+   ALERTS
+   ========================================================================== */
 .alert {
   display: flex;
   align-items: center;
@@ -245,16 +271,17 @@ body, a, button, input, textarea {
   border-radius: var(--radius-md);
   font-size: 0.85rem;
   margin-top: 1rem;
+  font-family: var(--font-body);
 }
 
 .alert-success {
-  background: rgba(34, 197, 94, 0.08);
-  border: 1px solid rgba(34, 197, 94, 0.2);
-  color: #4ade80;
+  background: #F0FDF4;
+  border: 1px solid #BBF7D0;
+  color: #15803D;
 }
 
 .alert-error {
-  background: rgba(239, 68, 68, 0.08);
-  border: 1px solid rgba(239, 68, 68, 0.2);
-  color: #fca5a5;
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  color: var(--accent);
 }

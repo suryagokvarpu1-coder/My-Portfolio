@@ -67,7 +67,7 @@ export const GitHubSection = () => {
               {/* Stats Grid */}
               <div className="github-stats-grid">
                 <div className="github-stat-item">
-                  <GitBranch size={20} color="var(--accent-lime)" />
+                  <GitBranch size={20} color="var(--accent)" />
                   <div>
                     <span className="stat-num">{profileData?.public_repos || 25}</span>
                     <span className="stat-lbl">Public Repositories</span>
@@ -75,7 +75,7 @@ export const GitHubSection = () => {
                 </div>
 
                 <div className="github-stat-item">
-                  <Code2 size={20} color="var(--accent-violet)" />
+                  <Code2 size={20} color="var(--accent-sec)" />
                   <div>
                     <span className="stat-num">React & JS</span>
                     <span className="stat-lbl">Top Languages</span>
@@ -83,7 +83,7 @@ export const GitHubSection = () => {
                 </div>
 
                 <div className="github-stat-item">
-                  <GitPullRequest size={20} color="var(--accent-cyan)" />
+                  <GitPullRequest size={20} color="var(--accent)" />
                   <div>
                     <span className="stat-num">Active</span>
                     <span className="stat-lbl">Contribution Status</span>
@@ -157,7 +157,7 @@ export const GitHubSection = () => {
         .profile-username {
           font-family: var(--font-mono);
           font-size: 0.85rem;
-          color: var(--accent-lime);
+          color: var(--accent);
           display: block;
           margin-bottom: 1rem;
         }
@@ -180,7 +180,7 @@ export const GitHubSection = () => {
           display: flex;
           align-items: center;
           gap: 1rem;
-          background: rgba(255, 255, 255, 0.02);
+          background: var(--bg-subtle);
           border: 1px solid var(--border);
           border-radius: var(--radius-md);
           padding: 1.25rem;

@@ -24,13 +24,13 @@ export const SectionHeader = ({ index, title, subtitle, align = 'left' }) => {
   return (
     <motion.div
       className="section-header"
-      style={{ textAlign: isCenter ? 'center' : 'left' }}
+      style={{ textAlign: isCenter ? 'center' : 'left', marginBottom: '3.5rem' }}
       variants={containerVariants}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: '-5%' }}
     >
-      {/* Index + line */}
+      {/* Index badge + line */}
       <motion.div
         variants={itemVariants}
         style={{
@@ -43,42 +43,47 @@ export const SectionHeader = ({ index, title, subtitle, align = 'left' }) => {
       >
         <span
           style={{
-            fontFamily: "'DM Mono', monospace",
+            fontFamily: 'var(--font-mono)',
             fontSize: '0.7rem',
-            fontWeight: 500,
-            color: '#e8ff6b',
-            letterSpacing: '0.25em',
+            fontWeight: 600,
+            color: '#DC2626',
+            letterSpacing: '0.2em',
             textTransform: 'uppercase',
+            background: '#FEE2E2',
+            padding: '0.2rem 0.6rem',
+            borderRadius: '4px',
           }}
         >
           {index}
         </span>
         <div
           style={{
-            width: '32px',
-            height: '1px',
-            background: 'linear-gradient(90deg, #e8ff6b, transparent)',
+            flex: isCenter ? 'none' : 1,
+            maxWidth: '48px',
+            height: '2px',
+            background: 'linear-gradient(90deg, #DC2626, transparent)',
+            borderRadius: '2px',
           }}
         />
       </motion.div>
 
-      {/* Title with mask reveal */}
+      {/* Title */}
       <div style={{ overflow: 'hidden' }}>
         <motion.h2
           variants={{
             hidden: { y: '105%' },
             visible: {
               y: 0,
-              transition: { duration: 0.9, ease: [0.76, 0, 0.24, 1] },
+              transition: { duration: 0.85, ease: [0.76, 0, 0.24, 1] },
             },
           }}
           style={{
-            fontFamily: "'Space Grotesk', sans-serif",
-            fontSize: 'clamp(2.2rem, 4.5vw, 3.5rem)',
-            fontWeight: 700,
+            fontFamily: 'var(--font-display)',
+            fontSize: 'clamp(2rem, 4.5vw, 3.2rem)',
+            fontWeight: 800,
             letterSpacing: '-0.03em',
-            lineHeight: 1.05,
-            color: '#f0f0f5',
+            lineHeight: 1.1,
+            color: '#111827',
           }}
         >
           {title}
@@ -91,13 +96,14 @@ export const SectionHeader = ({ index, title, subtitle, align = 'left' }) => {
           variants={itemVariants}
           style={{
             marginTop: '1rem',
-            fontFamily: "'DM Sans', sans-serif",
+            fontFamily: 'var(--font-body)',
             fontSize: '1rem',
-            color: '#7a7a8c',
+            color: '#6B7280',
             lineHeight: 1.7,
-            maxWidth: isCenter ? '580px' : '520px',
+            maxWidth: isCenter ? '560px' : '520px',
             marginLeft: isCenter ? 'auto' : 0,
             marginRight: isCenter ? 'auto' : 0,
+            fontWeight: 400,
           }}
         >
           {subtitle}

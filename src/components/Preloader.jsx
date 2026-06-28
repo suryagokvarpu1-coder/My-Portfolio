@@ -7,7 +7,7 @@ export const Preloader = ({ onComplete }) => {
   const [hidden, setHidden] = useState(false);
 
   useEffect(() => {
-    const DURATION = 1200; // Recruiter friendly fast load
+    const DURATION = 1200;
     const INTERVAL = 16;
     const STEP = 100 / (DURATION / INTERVAL);
 
@@ -21,7 +21,7 @@ export const Preloader = ({ onComplete }) => {
             setTimeout(() => {
               setHidden(true);
               onComplete?.();
-            }, 600);
+            }, 500);
           }, 200);
         }
         return next;
@@ -41,38 +41,35 @@ export const Preloader = ({ onComplete }) => {
             position: 'fixed',
             inset: 0,
             zIndex: 999999,
-            background: '#0a0b10',
+            background: '#FFFFFF',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            overflow: 'hidden',
           }}
         >
-          <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.25rem' }}>
+          <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5rem' }}>
             <span
               style={{
-                fontFamily: "var(--font-display)",
+                fontFamily: 'var(--font-display)',
                 fontSize: '2.5rem',
-                fontWeight: 700,
-                color: 'var(--text-primary)',
+                fontWeight: 800,
+                color: '#111827',
                 letterSpacing: '-0.03em',
               }}
             >
-              Yaswanth<span style={{ color: 'var(--accent-lime)' }}>.G</span>
+              Yaswanth<span style={{ color: '#DC2626' }}>.G</span>
             </span>
 
-            {/* Percentage indicator */}
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.78rem', color: '#9CA3AF', letterSpacing: '0.1em' }}>
               {Math.round(progress)}%
             </span>
 
-            {/* Micro loading line */}
             <div
               style={{
-                width: '120px',
-                height: '2px',
-                background: 'rgba(255, 255, 255, 0.05)',
+                width: '140px',
+                height: '3px',
+                background: '#F3F4F6',
                 borderRadius: '999px',
                 overflow: 'hidden',
               }}
@@ -81,8 +78,9 @@ export const Preloader = ({ onComplete }) => {
                 style={{
                   height: '100%',
                   width: `${progress}%`,
-                  background: 'var(--accent-lime)',
+                  background: 'linear-gradient(90deg, #DC2626, #EF4444)',
                   transition: 'width 0.1s linear',
+                  borderRadius: '999px',
                 }}
               />
             </div>
@@ -93,12 +91,12 @@ export const Preloader = ({ onComplete }) => {
           key="exit"
           initial={{ opacity: 1 }}
           animate={{ opacity: 0 }}
-          transition={{ duration: 0.5, ease: 'easeInOut' }}
+          transition={{ duration: 0.45, ease: 'easeInOut' }}
           style={{
             position: 'fixed',
             inset: 0,
             zIndex: 999999,
-            background: '#0a0b10',
+            background: '#FFFFFF',
             pointerEvents: 'none',
           }}
         />

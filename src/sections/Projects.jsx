@@ -5,11 +5,11 @@ import { SectionHeader } from '../components/SectionHeader';
 import { portfolioData } from '../data/portfolioData';
 
 const CARD_GRADIENTS = [
-  'linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(6, 182, 212, 0.15) 100%)',
-  'linear-gradient(135deg, rgba(232, 255, 107, 0.1) 0%, rgba(139, 92, 246, 0.15) 100%)',
-  'linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(232, 255, 107, 0.1) 100%)',
-  'linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(232, 255, 107, 0.1) 100%)',
-  'linear-gradient(135deg, rgba(232, 255, 107, 0.1) 0%, rgba(6, 182, 212, 0.15) 100%)',
+  'linear-gradient(135deg, rgba(220, 38, 38, 0.06) 0%, rgba(239, 68, 68, 0.03) 100%)',
+  'linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, rgba(220, 38, 38, 0.08) 100%)',
+  'linear-gradient(135deg, rgba(220, 38, 38, 0.04) 0%, rgba(254, 226, 226, 0.6) 100%)',
+  'linear-gradient(135deg, rgba(254, 226, 226, 0.8) 0%, rgba(220, 38, 38, 0.06) 100%)',
+  'linear-gradient(135deg, rgba(220, 38, 38, 0.08) 0%, rgba(239, 68, 68, 0.04) 100%)',
 ];
 
 export const Projects = () => {
@@ -60,18 +60,18 @@ export const Projects = () => {
                 >
                   <div
                     style={{
-                      background: 'rgba(10, 11, 16, 0.85)',
-                      border: '1px solid rgba(255,255,255,0.06)',
+                      background: 'rgba(255, 255, 255, 0.9)',
+                      border: '1px solid rgba(220, 38, 38, 0.15)',
                       borderRadius: '12px',
                       padding: '0.75rem 1.25rem',
                       display: 'flex',
                       alignItems: 'center',
                       gap: '0.5rem',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.3)',
+                      boxShadow: '0 4px 15px rgba(220,38,38,0.08)',
                     }}
                   >
-                    <Sparkles size={14} color="var(--accent-lime)" />
-                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 500, color: 'var(--text-primary)' }}>
+                    <Sparkles size={14} color="var(--accent)" />
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 500, color: 'var(--text-secondary)' }}>
                       {proj.id.toUpperCase()} MOCKUP
                     </span>
                   </div>
@@ -135,7 +135,7 @@ export const Projects = () => {
                           gap: '0.4rem',
                           fontSize: '0.85rem',
                           fontWeight: 500,
-                          color: 'var(--accent-lime)',
+                          color: 'var(--accent)',
                         }}
                       >
                         <ExternalLink size={14} /> Live Demo

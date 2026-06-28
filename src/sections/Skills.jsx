@@ -7,11 +7,11 @@ export const Skills = () => {
   const { skills } = portfolioData;
 
   const categories = [
-    { key: 'frontend', title: 'Frontend Development', color: 'var(--accent-lime)' },
-    { key: 'backend', title: 'Backend Development', color: 'var(--accent-violet)' },
-    { key: 'programming', title: 'Programming Languages', color: 'var(--accent-cyan)' },
-    { key: 'tools', title: 'Tools & Platforms', color: 'var(--text-primary)' },
-    { key: 'ai', title: 'AI & Research', color: 'var(--accent-lime)' },
+    { key: 'frontend', title: 'Frontend Development', color: 'var(--accent)' },
+    { key: 'backend', title: 'Backend Development', color: 'var(--accent-sec)' },
+    { key: 'programming', title: 'Programming Languages', color: 'var(--accent)' },
+    { key: 'tools', title: 'Tools & Platforms', color: 'var(--text-secondary)' },
+    { key: 'ai', title: 'AI & Research', color: 'var(--accent-sec)' },
   ];
 
   return (
@@ -108,14 +108,14 @@ export const Skills = () => {
           border: 1px solid var(--border);
           border-radius: 8px;
           color: var(--text-secondary);
-          background: rgba(255, 255, 255, 0.01);
+          background: var(--bg-subtle);
           transition: all 0.2s ease;
         }
 
         .skill-badge:hover {
-          color: var(--text-primary);
-          border-color: rgba(255, 255, 255, 0.25);
-          background: rgba(255, 255, 255, 0.04);
+          color: var(--accent);
+          border-color: var(--accent);
+          background: var(--accent-light);
         }
 
         @media (min-width: 640px) {

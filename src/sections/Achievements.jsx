@@ -5,9 +5,9 @@ import { SectionHeader } from '../components/SectionHeader';
 import { portfolioData } from '../data/portfolioData';
 
 const IconMap = ({ index, size = 24 }) => {
-  if (index === 0) return <Trophy size={size} color="#e8ff6b" />;
-  if (index === 1) return <Code size={size} color="#7c6af7" />;
-  return <Zap size={size} color="#4cc9f0" />;
+  if (index === 0) return <Trophy size={size} color="#DC2626" />;
+  if (index === 1) return <Code size={size} color="#EF4444" />;
+  return <Zap size={size} color="#B91C1C" />;
 };
 
 export const Achievements = () => {
@@ -66,16 +66,16 @@ export const Achievements = () => {
           flex-direction: column;
           gap: 1.5rem;
           padding: 2.5rem;
-          background: rgba(11, 12, 18, 0.4);
-          border: 1px solid rgba(255, 255, 255, 0.05);
+          background: var(--bg-card);
+          border: 1px solid var(--border);
           border-radius: var(--radius-lg);
-          backdrop-filter: var(--glass-blur);
-          transition: border-color var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+          transition: border-color var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
         }
 
         .achievement-row:hover {
-          border-color: rgba(232, 255, 107, 0.2);
+          border-color: var(--accent);
           transform: translateY(-4px);
+          box-shadow: var(--shadow-red);
         }
 
         .achievement-num-box {
@@ -90,20 +90,20 @@ export const Achievements = () => {
           font-weight: 700;
           line-height: 1;
           color: transparent;
-          -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.15);
+          -webkit-text-stroke: 1.5px rgba(220, 38, 38, 0.15);
           transition: -webkit-text-stroke var(--dur-base) var(--ease-out);
         }
 
         .achievement-row:hover .achievement-num {
-          -webkit-text-stroke: 1.5px rgba(232, 255, 107, 0.8);
+          -webkit-text-stroke: 1.5px rgba(220, 38, 38, 0.6);
         }
 
         .achievement-icon-wrap {
           width: 50px;
           height: 50px;
           border-radius: 50%;
-          background: rgba(255, 255, 255, 0.02);
-          border: 1px solid rgba(255, 255, 255, 0.05);
+          background: var(--accent-light);
+          border: 1px solid rgba(220, 38, 38, 0.15);
           display: flex;
           align-items: center;
           justify-content: center;
