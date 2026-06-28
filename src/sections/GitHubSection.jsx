@@ -3,6 +3,8 @@ import { motion } from 'framer-motion';
 import { GitBranch, GitPullRequest, Code2, Users, ExternalLink } from 'lucide-react';
 import { SectionHeader } from '../components/SectionHeader';
 import { portfolioData } from '../data/portfolioData';
+import profileImg from '../assets/images/profile.png';
+
 
 export const GitHubSection = () => {
   const { githubUrl } = portfolioData.personalInfo;
@@ -51,7 +53,7 @@ export const GitHubSection = () => {
               {/* Profile header */}
               <div className="profile-header">
                 <img
-                  src={profileData?.avatar_url || 'assets/images/profile.png'}
+                  src={profileData?.avatar_url || profileImg}
                   alt={profileData?.name || 'Gokavarapu Yaswanth'}
                   className="profile-avatar"
                 />

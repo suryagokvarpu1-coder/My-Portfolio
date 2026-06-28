@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowDown, Github, Linkedin, Mail } from 'lucide-react';
 import { portfolioData } from '../data/portfolioData';
+import profileImg from '../assets/images/profile.png';
+
 
 const ROLES = [
   "Computer Science Engineering Student",
@@ -207,7 +209,7 @@ export const Hero = () => {
           >
             <div className="hero-photo-wrap">
               <img
-                src="assets/images/profile.png"
+                src={profileImg}
                 alt="Gokavarapu Yaswanth"
                 className="hero-photo"
               />
