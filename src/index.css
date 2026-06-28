@@ -208,7 +208,7 @@ body, a, button, input, textarea {
   top: 0;
   left: 0;
   height: 3px;
-  background: linear-gradient(90deg, var(--accent), var(--accent-sec));
+  background: linear-gradient(90deg, #991B1B 0%, #DC2626 100%);
   z-index: 10000;
   box-shadow: 0 1px 8px rgba(220,38,38,0.3);
 }

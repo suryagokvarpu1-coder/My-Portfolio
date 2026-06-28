@@ -75,18 +75,18 @@ export const WebGLBackground = () => {
       varying float v_elevation;
 
       void main() {
-        // Deep violet to black base
-        vec3 colA = vec3(0.04, 0.03, 0.10); // dark violet
-        vec3 colB = vec3(0.06, 0.04, 0.16); // medium violet
-        vec3 colC = vec3(0.02, 0.08, 0.12); // dark teal
+        // Deep red to black base
+        vec3 colA = vec3(0.08, 0.01, 0.01); // dark red
+        vec3 colB = vec3(0.04, 0.0, 0.0); // black-red
+        vec3 colC = vec3(0.12, 0.02, 0.02); // red accent
 
         float t = v_elevation * 0.5 + 0.5;
         vec3 col = mix(colA, colB, t);
         col = mix(col, colC, sin(v_uv.x * 3.14 + u_time * 0.2) * 0.5 + 0.5);
 
-        // Add lime accent at peaks
-        vec3 limeAccent = vec3(0.91, 1.0, 0.42);
-        col += limeAccent * max(v_elevation - 0.3, 0.0) * 0.08;
+        // Add red accent at peaks
+        vec3 redAccent = vec3(0.86, 0.15, 0.15);
+        col += redAccent * max(v_elevation - 0.3, 0.0) * 0.08;
 
         // Vignette
         float dist = length(v_uv - 0.5) * 2.0;

@@ -78,7 +78,7 @@ export const Preloader = ({ onComplete }) => {
                 style={{
                   height: '100%',
                   width: `${progress}%`,
-                  background: 'linear-gradient(90deg, #DC2626, #EF4444)',
+                  background: 'linear-gradient(90deg, #991B1B, #DC2626)',
                   transition: 'width 0.1s linear',
                   borderRadius: '999px',
                 }}
