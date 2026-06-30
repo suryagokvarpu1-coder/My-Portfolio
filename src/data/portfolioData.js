@@ -40,7 +40,7 @@ export const portfolioData = {
       desc: "Qubic Council is a modern web platform designed to deliver a professional, responsive, and user-friendly experience. It features a clean interface, smooth navigation, optimized performance, and scalable architecture, demonstrating my expertise in modern web development and UI/UX design.",
       tags: ["React.js", "JavaScript", "Tailwind CSS", "Firebase", "Vercel"],
       demoUrl: "https://qubic-council.vercel.app",
-      githubUrl: "",
+      githubUrl: "https://github.com/suryagokvarpu1-coder/Qubic-Council",
       featured: true
     },
     {
