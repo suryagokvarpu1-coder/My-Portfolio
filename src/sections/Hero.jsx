@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowDown, Github, Linkedin, Mail } from 'lucide-react';
+import { ArrowDown, Github, Linkedin, Mail, Download, Loader2 } from 'lucide-react';
 import { portfolioData } from '../data/portfolioData';
 import profileImg from '../assets/images/profile.png';
 
@@ -20,6 +20,7 @@ export const Hero = () => {
   const [currentText, setCurrentText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [typingSpeed, setTypingSpeed] = useState(100);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   useEffect(() => {
     let timer;
@@ -53,6 +54,20 @@ export const Hero = () => {
     if (!targetElement) return;
     const top = targetElement.getBoundingClientRect().top + window.scrollY - 80;
     window.scrollTo({ top, behavior: 'smooth' });
+  };
+
+  const handleDownloadResume = (e) => {
+    e.preventDefault();
+    setIsDownloading(true);
+    setTimeout(() => {
+      const link = document.createElement('a');
+      link.href = '/assets/Gokavarapu_Yaswanth_Resume.pdf';
+      link.download = 'Gokavarapu_Yaswanth_Resume.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setIsDownloading(false);
+    }, 1000);
   };
 
   return (
@@ -156,16 +171,29 @@ export const Hero = () => {
                 Contact Me
               </a>
 
-              <a
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  alert("CV asset generation complete. Ready to link real PDF document.");
-                }}
+              <button
+                onClick={handleDownloadResume}
+                disabled={isDownloading}
                 className="btn btn-secondary"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  cursor: isDownloading ? 'not-allowed' : 'pointer'
+                }}
               >
-                Download Resume
-              </a>
+                {isDownloading ? (
+                  <>
+                    <Loader2 size={16} className="animate-spin" />
+                    <span>Preparing PDF...</span>
+                  </>
+                ) : (
+                  <>
+                    <Download size={16} />
+                    <span>Download Resume</span>
+                  </>
+                )}
+              </button>
             </div>
 
             {/* Social Links */}
