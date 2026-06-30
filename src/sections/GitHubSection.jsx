@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { GitBranch, GitPullRequest, Code2, Users, ExternalLink } from 'lucide-react';
+import { GitBranch, GitPullRequest, Code2, ExternalLink } from 'lucide-react';
 import { SectionHeader } from '../components/SectionHeader';
 import { portfolioData } from '../data/portfolioData';
 import profileImg from '../assets/images/profile.png';
@@ -90,13 +90,6 @@ export const GitHubSection = () => {
                   </div>
                 </div>
 
-                <div className="github-stat-item">
-                  <Users size={20} color="var(--text-primary)" />
-                  <div>
-                    <span className="stat-num">{profileData?.followers || 0}</span>
-                    <span className="stat-lbl">Followers</span>
-                  </div>
-                </div>
               </div>
 
               {/* Link CTA */}
@@ -203,13 +196,16 @@ export const GitHubSection = () => {
         }
 
         @media (min-width: 560px) {
-          .github-stats-grid {
-            grid-template-columns: repeat(2, 1fr);
-          }
           .profile-header {
             flex-direction: row;
             text-align: left;
             align-items: flex-start;
+          }
+        }
+
+        @media (min-width: 640px) {
+          .github-stats-grid {
+            grid-template-columns: repeat(3, 1fr);
           }
         }
       `}</style>
