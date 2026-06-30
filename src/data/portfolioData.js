@@ -92,6 +92,12 @@ export const portfolioData = {
 
   experience: [
     {
+      title: "AI Research & Development Intern | Frontend Developer (UI/UX)",
+      company: "Yudi AI Labs",
+      duration: "Present",
+      desc: "Contributing to the development of AI-powered solutions and modern web applications. Combines AI research with frontend engineering to create intuitive UI/UX experiences, build responsive React.js interfaces, optimize prompt engineering workflows, and deliver scalable, high-performance digital products."
+    },
+    {
       title: "Full Stack Development",
       company: "Independent Projects",
       duration: "Ongoing",
